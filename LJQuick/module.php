@@ -79,9 +79,6 @@
 						}
 						IPS_ApplyChanges($iid);
 					}
-					//No subchannels for broadcast
-					if($i == 0)
-						break;
 				}
 			}
 			
@@ -154,9 +151,6 @@
 						}
 						IPS_ApplyChanges($iid);
 					}
-					//No subchannels for broadcast
-					if($i == 0)
-						break;
 				}
 			}
 			

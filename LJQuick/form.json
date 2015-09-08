@@ -2,13 +2,13 @@
 	"elements":
 	[
 		{ "type": "Button", "label": "Generate Switch (1-8)", "onClick": "LJ_GenerateSwitch($id, 1, 8);" },
-		{ "type": "Button", "label": "Generate Switch (8-F)", "onClick": "LJ_GenerateSwitch($id, 9, 15);" },
-		{ "type": "Button", "label": "Generate Switch (Broadcast)", "onClick": "LJ_GenerateSwitch($id, 0, 0);" },
+		{ "type": "Button", "label": "Generate Switch (9-E)", "onClick": "LJ_GenerateSwitch($id, 9, 14);" },
+		{ "type": "Button", "label": "Generate Switch (F)", "onClick": "LJ_GenerateSwitch($id, 15, 15);" },
 		{ "type": "Button", "label": "Generate Dimming (1-8)", "onClick": "LJ_GenerateDim($id, 1, 8);" },
-		{ "type": "Button", "label": "Generate Dimming (9-F)", "onClick": "LJ_GenerateDim($id, 9, 15);" },
-		{ "type": "Button", "label": "Generate Dimming (Broadcast)", "onClick": "LJ_GenerateDim($id, 0, 0);" },
+		{ "type": "Button", "label": "Generate Dimming (9-E)", "onClick": "LJ_GenerateDim($id, 9, 14);" },
+		{ "type": "Button", "label": "Generate Dimming (F)", "onClick": "LJ_GenerateDim($id, 15, 15);" },
 		{ "type": "Button", "label": "Generate Shutter (1-8)", "onClick": "LJ_GenerateShutter($id, 1, 8);" },
-		{ "type": "Button", "label": "Generate Shutter (9-F)", "onClick": "LJ_GenerateShutter($id, 9, 15);" },
-		{ "type": "Button", "label": "Generate Shutter (Broadcast)", "onClick": "LJ_GenerateShutter($id, 0, 0);" }
+		{ "type": "Button", "label": "Generate Shutter (9-E)", "onClick": "LJ_GenerateShutter($id, 9, 14);" },
+		{ "type": "Button", "label": "Generate Shutter (F)", "onClick": "LJ_GenerateShutter($id, 15, 15);" }
 	]
 }
