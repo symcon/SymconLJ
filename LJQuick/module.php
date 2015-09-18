@@ -168,7 +168,78 @@
 		public function GenerateShutter($Start, $End)
 		{
 			
-			echo "Not available yet.";
+			$qid = @IPS_GetObjectIDByIdent("KNXQuick", 0);
+			if($qid === false) {
+				$qid = IPS_CreateCategory();
+				IPS_SetName($qid, "KNX quick");
+				IPS_SetIdent($qid, "KNXQuick");
+			}
+			
+			$sid = @IPS_GetObjectIDByIdent("Shutter", $qid);
+			if($sid === false) {
+				$sid = IPS_CreateCategory();
+				IPS_SetName($sid, "Shutter");
+				IPS_SetIdent($sid, "Shutter");
+				IPS_SetParent($sid, $qid);
+				IPS_SetPosition($sid, 2);
+			}
+			
+			for($i=$Start; $i<=$End; $i++) {
+				for($j=0; $j<=9; $j++) {
+					$iid = @IPS_GetObjectIDByIdent("Shutter".strtoupper(dechex($i).$j), $sid);
+					if($iid === false) {
+						$iid = IPS_CreateInstance("{24A9D68D-7B98-4D74-9BAE-3645D435A9EF}");
+						IPS_SetName($iid, "Shutter (Group ".strtoupper(dechex($i)).", Channel ".$j.")");
+						IPS_SetIdent($iid, "Shutter".strtoupper(dechex($i)).$j);
+						IPS_SetParent($iid, $sid);
+						IPS_SetProperty($iid, "GroupMoveAddress1", 14);
+						IPS_SetProperty($iid, "GroupMoveAddress2", 0);
+						IPS_SetProperty($iid, "GroupMoveAddress3", ($i*16)+$j);
+						IPS_SetProperty($iid, "GroupStopAddress1", 14);
+						IPS_SetProperty($iid, "GroupStopAddress2", 1);
+						IPS_SetProperty($iid, "GroupStopAddress3", ($i*16)+$j);
+						if($j > 0) {
+							$mapping = Array();
+							$mapping[] = Array(
+								"GroupAddress1" => 14,
+								"GroupAddress2" => 0,
+								"GroupAddress3" => $i*16
+							);
+							$mapping[] = Array(
+								"GroupAddress1" => 14,
+								"GroupAddress2" => 0,
+								"GroupAddress3" => 240
+							);
+							$mapping[] = Array(
+								"GroupAddress1" => 14,
+								"GroupAddress2" => 0,
+								"GroupAddress3" => 240+$j
+							);
+							IPS_SetProperty($iid, "GroupMoveMapping", json_encode($mapping));
+							$mapping = Array();
+							$mapping[] = Array(
+								"GroupAddress1" => 14,
+								"GroupAddress2" => 1,
+								"GroupAddress3" => $i*16
+							);
+							$mapping[] = Array(
+								"GroupAddress1" => 14,
+								"GroupAddress2" => 1,
+								"GroupAddress3" => 240
+							);
+							$mapping[] = Array(
+								"GroupAddress1" => 14,
+								"GroupAddress2" => 1,
+								"GroupAddress3" => 240+$j
+							);
+							IPS_SetProperty($iid, "GroupStopMapping", json_encode($mapping));
+						}
+						IPS_ApplyChanges($iid);
+					}
+				}
+			}
+			
+			echo "Done.";
 			
 		}		
 
