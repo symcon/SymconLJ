@@ -1,14 +1,71 @@
 {
-	"elements":
+	"actions":
 	[
-		{ "type": "Button", "label": "Generate Switch (1-8)", "onClick": "LJ_GenerateSwitch($id, 1, 8);" },
-		{ "type": "Button", "label": "Generate Switch (9-E)", "onClick": "LJ_GenerateSwitch($id, 9, 14);" },
-		{ "type": "Button", "label": "Generate Switch (F)", "onClick": "LJ_GenerateSwitch($id, 15, 15);" },
-		{ "type": "Button", "label": "Generate Dimming (1-8)", "onClick": "LJ_GenerateDim($id, 1, 8);" },
-		{ "type": "Button", "label": "Generate Dimming (9-E)", "onClick": "LJ_GenerateDim($id, 9, 14);" },
-		{ "type": "Button", "label": "Generate Dimming (F)", "onClick": "LJ_GenerateDim($id, 15, 15);" },
-		{ "type": "Button", "label": "Generate Shutter (1-8)", "onClick": "LJ_GenerateShutter($id, 1, 8);" },
-		{ "type": "Button", "label": "Generate Shutter (9-E)", "onClick": "LJ_GenerateShutter($id, 9, 14);" },
-		{ "type": "Button", "label": "Generate Shutter (F)", "onClick": "LJ_GenerateShutter($id, 15, 15);" }
+		{ "type": "Label", "label": "Switch: Please select Group and press Generate!" },
+		{ "type": "Select", "name": "GenerateSwitch", "caption": "Group (Switch)", "options": 
+			[
+				{ "label": "Group 1", "value": 1 },
+				{ "label": "Group 2", "value": 2 },
+				{ "label": "Group 3", "value": 3 },
+				{ "label": "Group 4", "value": 4 },
+				{ "label": "Group 5", "value": 5 },
+				{ "label": "Group 6", "value": 6 },
+				{ "label": "Group 7", "value": 7 },
+				{ "label": "Group 8", "value": 8 },
+				{ "label": "Group 9", "value": 9 },
+				{ "label": "Group 9", "value": 10 },
+				{ "label": "Group A", "value": 11 },
+				{ "label": "Group B", "value": 12 },
+				{ "label": "Group C", "value": 13 },
+				{ "label": "Group D", "value": 14 },
+				{ "label": "Group E", "value": 15 },
+				{ "label": "Group F", "value": 16 }
+			]
+		},
+		{ "type": "Button", "caption": "Group (Switch)", "label": "Generate", "onClick": "LJ_GenerateSwitch($id, $GenerateSwitch, $GenerateSwitch);" },
+		{ "type": "Label", "label": "Dimming: Please select Group and press Generate!" },
+		{ "type": "Select", "name": "GenerateDimming", "caption": "Group (Dimming)", "options": 
+			[
+				{ "label": "Group 1", "value": 1 },
+				{ "label": "Group 2", "value": 2 },
+				{ "label": "Group 3", "value": 3 },
+				{ "label": "Group 4", "value": 4 },
+				{ "label": "Group 5", "value": 5 },
+				{ "label": "Group 6", "value": 6 },
+				{ "label": "Group 7", "value": 7 },
+				{ "label": "Group 8", "value": 8 },
+				{ "label": "Group 9", "value": 9 },
+				{ "label": "Group 9", "value": 10 },
+				{ "label": "Group A", "value": 11 },
+				{ "label": "Group B", "value": 12 },
+				{ "label": "Group C", "value": 13 },
+				{ "label": "Group D", "value": 14 },
+				{ "label": "Group E", "value": 15 },
+				{ "label": "Group F", "value": 16 }
+			]
+		},
+		{ "type": "Button", "caption": "Group (Dimming)", "label": "Generate", "onClick": "LJ_GenerateDim($id, $GenerateDimming, $GenerateDimming);" },
+		{ "type": "Label", "label": "Shutter: Please select Group and press Generate!" },
+		{ "type": "Select", "name": "GenerateShutter", "caption": "Group (Shutter)", "options": 
+			[
+				{ "label": "Group 1", "value": 1 },
+				{ "label": "Group 2", "value": 2 },
+				{ "label": "Group 3", "value": 3 },
+				{ "label": "Group 4", "value": 4 },
+				{ "label": "Group 5", "value": 5 },
+				{ "label": "Group 6", "value": 6 },
+				{ "label": "Group 7", "value": 7 },
+				{ "label": "Group 8", "value": 8 },
+				{ "label": "Group 9", "value": 9 },
+				{ "label": "Group 9", "value": 10 },
+				{ "label": "Group A", "value": 11 },
+				{ "label": "Group B", "value": 12 },
+				{ "label": "Group C", "value": 13 },
+				{ "label": "Group D", "value": 14 },
+				{ "label": "Group E", "value": 15 },
+				{ "label": "Group F", "value": 16 }
+			]
+		},
+		{ "type": "Button", "caption": "Group (Shutter)", "label": "Generate", "onClick": "LJ_GenerateShutter($id, $GenerateShutter, $GenerateShutter);" }
 	]
 }
