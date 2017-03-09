@@ -12,15 +12,15 @@
 			$this->ConnectParent("{1C902193-B044-43B8-9433-419F09C641B8}");
 
 			//We need our own profiles
-            IPS_CreateVariableProfile("Electricity.Wh", 2);
-            IPS_SetVariableProfileValues("Electricity.Wh", 0, 0, 0);
-            IPS_SetVariableProfileDigits("Electricity.Wh", 2);
-            IPS_SetVariableProfileText("Electricity.Wh", "", " Wh");
+			IPS_CreateVariableProfile("Electricity.Wh", 2);
+			IPS_SetVariableProfileValues("Electricity.Wh", 0, 0, 0);
+			IPS_SetVariableProfileDigits("Electricity.Wh", 2);
+			IPS_SetVariableProfileText("Electricity.Wh", "", " Wh");
 
-            IPS_CreateVariableProfile("Electricity.MWh", 2);
-            IPS_SetVariableProfileValues("Electricity.MWh", 0, 0, 0);
-            IPS_SetVariableProfileDigits("Electricity.MWh", 2);
-            IPS_SetVariableProfileText("Electricity.MWh", "", " MWh");
+			IPS_CreateVariableProfile("Electricity.MWh", 2);
+			IPS_SetVariableProfileValues("Electricity.MWh", 0, 0, 0);
+			IPS_SetVariableProfileDigits("Electricity.MWh", 2);
+			IPS_SetVariableProfileText("Electricity.MWh", "", " MWh");
 
 		}
 		
