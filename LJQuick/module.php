@@ -12,15 +12,25 @@
 			$this->ConnectParent("{1C902193-B044-43B8-9433-419F09C641B8}");
 
 			//We need our own profiles
-			IPS_CreateVariableProfile("Electricity.Wh", 2);
+			IPS_CreateVariableProfile("Electricity.Wh", 1);
 			IPS_SetVariableProfileValues("Electricity.Wh", 0, 0, 0);
-			IPS_SetVariableProfileDigits("Electricity.Wh", 2);
 			IPS_SetVariableProfileText("Electricity.Wh", "", " Wh");
 
-			IPS_CreateVariableProfile("Electricity.MWh", 2);
-			IPS_SetVariableProfileValues("Electricity.MWh", 0, 0, 0);
-			IPS_SetVariableProfileDigits("Electricity.MWh", 2);
-			IPS_SetVariableProfileText("Electricity.MWh", "", " MWh");
+            IPS_CreateVariableProfile("Electricity.kWh", 1);
+            IPS_SetVariableProfileValues("Electricity.kWh", 0, 0, 0);
+            IPS_SetVariableProfileText("Electricity.kWh", "", " kWh");
+
+			IPS_CreateVariableProfile("Electricity.MWh", 1);
+            IPS_SetVariableProfileValues("Electricity.MWh", 0, 0, 0);
+            IPS_SetVariableProfileText("Electricity.MWh", "", " MWh");
+
+            IPS_CreateVariableProfile("Volume.CubicMeter", 1);
+            IPS_SetVariableProfileValues("Volume.CubicMeter", 0, 0, 0);
+            IPS_SetVariableProfileText("Volume.CubicMeter", "", " m³");
+
+            IPS_CreateVariableProfile("Volume.Liter", 1);
+            IPS_SetVariableProfileValues("Volume.Liter", 0, 0, 0);
+            IPS_SetVariableProfileText("Volume.Liter", "", " l");
 
 		}
 		
@@ -425,7 +435,7 @@
                         IPS_ApplyChanges($iid);
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                        IPS_SetVariableCustomProfile($vid, "~Electricity");
+                        IPS_SetVariableCustomProfile($vid, "Electricity.kWh");
                         IPS_SetName($vid, "Energy Forward");
                     }
 
@@ -463,7 +473,7 @@
                         IPS_ApplyChanges($iid);
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                        IPS_SetVariableCustomProfile($vid, "~Electricity");
+                        IPS_SetVariableCustomProfile($vid, "Electricity.kWh");
                         IPS_SetName($vid, "Energy Reverse");
                     }
 
@@ -486,7 +496,7 @@
 						IPS_ApplyChanges($iid);
 
 						$vid = IPS_GetObjectIDByIdent("Value", $iid);
-						IPS_SetVariableCustomProfile($vid, "~Water");
+						IPS_SetVariableCustomProfile($vid, "Volume.Liter");
                         IPS_SetName($vid, "Volume");
 					}
 
@@ -505,7 +515,7 @@
                         IPS_ApplyChanges($iid);
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                        IPS_SetVariableCustomProfile($vid, "~Gas");
+                        IPS_SetVariableCustomProfile($vid, "Volume.CubicMeter");
                         IPS_SetName($vid, "Volume");
                     }
                 }
@@ -603,7 +613,7 @@
                         IPS_ApplyChanges($iid);
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                        IPS_SetVariableCustomProfile($vid, "~Electricity");
+                        IPS_SetVariableCustomProfile($vid, "Electricity.kWh");
                         IPS_SetName($vid, "Energy Heat");
                     }
 
@@ -641,7 +651,7 @@
                         IPS_ApplyChanges($iid);
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                        IPS_SetVariableCustomProfile($vid, "~Electricity");
+                        IPS_SetVariableCustomProfile($vid, "Electricity.kWh");
                         IPS_SetName($vid, "Energy Cool");
                     }
 
