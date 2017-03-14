@@ -711,6 +711,119 @@
 
         }
 
+        /**
+         * This function will be available automatically after the module is imported with the module control.
+         * Using the custom prefix this function will be callable from PHP and JSON-RPC through:
+         *
+         * Type:
+         *
+         * 	0 = Temperature
+         * 	1 = Temperature/Humidity
+         *
+         * LJ_GenerateHeating($id, $Group, $Type);
+         *
+         */
+        public function GenerateHeating($Group, $Type)
+        {
+
+            switch($Type) {
+                case 0:
+                    $TypeName = "Temperature";
+                    break;
+                case 1:
+                    $TypeName = "Temperature/Humidity";
+                    break;
+                default:
+                    die("Invalid type!");
+            }
+
+            $qid = @IPS_GetObjectIDByIdent("KNXQuick", 0);
+            if($qid === false) {
+                $qid = IPS_CreateCategory();
+                IPS_SetName($qid, "KNX quick");
+                IPS_SetIdent($qid, "KNXQuick");
+            }
+
+            $sid = @IPS_GetObjectIDByIdent("Heating_".$Type, $qid);
+            if($sid === false) {
+                $sid = IPS_CreateCategory();
+                IPS_SetName($sid, "Heating (".$TypeName.")");
+                IPS_SetIdent($sid, "Heating_".$Type);
+                IPS_SetParent($sid, $qid);
+                IPS_SetPosition($sid, 1);
+            }
+
+            for($Channel=1; $Channel<=9; $Channel++) {
+
+                //Status
+                $iid = @IPS_GetObjectIDByIdent("Heating_Status_".strtoupper(dechex($Group).$Channel), $sid);
+                if($iid === false) {
+                    $iid = IPS_CreateInstance("{D62B95D3-0C5E-406E-B1D9-8D102E50F64B}");
+                    IPS_SetName($iid, "Heating (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
+                    IPS_SetIdent($iid, "Heating_Status_".strtoupper(dechex($Group)).$Channel);
+                    IPS_SetParent($iid, $sid);
+                    IPS_SetProperty($iid, "GroupFunction", "Switch");
+                    IPS_SetProperty($iid, "GroupInterpretation", "Standard");
+                    IPS_SetProperty($iid, "GroupAddress1", 13);
+                    IPS_SetProperty($iid, "GroupAddress2", 7);
+                    IPS_SetProperty($iid, "GroupAddress3", ($Group*16)+$Channel);
+                    IPS_ApplyChanges($iid);
+
+                    //Set as read-only
+                    $vid = IPS_GetObjectIDByIdent("Value", $iid);
+                    IPS_SetName($vid, "Status (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetVariableCustomAction($vid, 1);
+                }
+
+                //Temperature
+                $iid = @IPS_GetObjectIDByIdent("Heating_Temperature_".strtoupper(dechex($Group).$Channel), $sid);
+                if($iid === false) {
+                    $iid = IPS_CreateInstance("{D62B95D3-0C5E-406E-B1D9-8D102E50F64B}");
+                    IPS_SetName($iid, "Heating (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
+                    IPS_SetIdent($iid, "Heating_Temperature_".strtoupper(dechex($Group)).$Channel);
+                    IPS_SetParent($iid, $sid);
+                    IPS_SetProperty($iid, "GroupFunction", "Value");
+                    IPS_SetProperty($iid, "GroupInterpretation", "Standard");
+                    IPS_SetProperty($iid, "GroupAddress1", 13);
+                    IPS_SetProperty($iid, "GroupAddress2", 5);
+                    IPS_SetProperty($iid, "GroupAddress3", ($Group*16)+$Channel);
+                    IPS_ApplyChanges($iid);
+
+                    $vid = IPS_GetObjectIDByIdent("Value", $iid);
+                    IPS_SetVariableCustomProfile($vid, "~Temperature");
+                    IPS_SetName($vid, "Temperature (GR ".$Group.", CH ".$Channel.")");
+                }
+
+                if($Type == 1 /* Temperature/Humidity */) {
+
+                    //Humidity
+                    $iid = @IPS_GetObjectIDByIdent("Heating_Humidity_".strtoupper(dechex($Group).$Channel), $sid);
+                    if($iid === false) {
+                        $iid = IPS_CreateInstance("{D62B95D3-0C5E-406E-B1D9-8D102E50F64B}");
+                        IPS_SetName($iid, "Heating (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
+                        IPS_SetIdent($iid, "Heating_Humidity_".strtoupper(dechex($Group)).$Channel);
+                        IPS_SetParent($iid, $sid);
+                        IPS_SetProperty($iid, "GroupFunction", "Value");
+                        IPS_SetProperty($iid, "GroupInterpretation", "Standard");
+                        IPS_SetProperty($iid, "GroupAddress1", 13);
+                        IPS_SetProperty($iid, "GroupAddress2", 6);
+                        IPS_SetProperty($iid, "GroupAddress3", ($Group*16)+$Channel);
+                        IPS_ApplyChanges($iid);
+
+                        $vid = IPS_GetObjectIDByIdent("Value", $iid);
+                        IPS_SetVariableCustomProfile($vid, "~Humidity.F");
+                        IPS_SetName($vid, "Humidity (GR ".$Group.", CH ".$Channel.")");
+                    }
+
+                }
+
+            }
+
+            echo "Done.";
+
+        }
+
+
 	}
 
 ?>

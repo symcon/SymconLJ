@@ -137,6 +137,52 @@
 			{ "label": "Group F", "value": 16 }
 		]
 		},
-		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateCounter($id, $GroupHeatQuantity, 2);" }
+		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateCounter($id, $GroupHeatQuantity, 2);" },
+		{ "type": "Label", "label": "" },
+		{ "type": "Label", "label": "Temperature: Please select Group and press Generate!" },
+		{ "type": "Select", "name": "GroupTemperature", "options":
+		[
+			{ "label": "Group 1", "value": 1 },
+			{ "label": "Group 2", "value": 2 },
+			{ "label": "Group 3", "value": 3 },
+			{ "label": "Group 4", "value": 4 },
+			{ "label": "Group 5", "value": 5 },
+			{ "label": "Group 6", "value": 6 },
+			{ "label": "Group 7", "value": 7 },
+			{ "label": "Group 8", "value": 8 },
+			{ "label": "Group 9", "value": 9 },
+			{ "label": "Group 9", "value": 10 },
+			{ "label": "Group A", "value": 11 },
+			{ "label": "Group B", "value": 12 },
+			{ "label": "Group C", "value": 13 },
+			{ "label": "Group D", "value": 14 },
+			{ "label": "Group E", "value": 15 },
+			{ "label": "Group F", "value": 16 }
+		]
+		},
+		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateHeating($id, $GroupTemperature, 0);" },
+		{ "type": "Label", "label": "" },
+		{ "type": "Label", "label": "Temperature/Humidity: Please select Group and press Generate!" },
+		{ "type": "Select", "name": "GroupTemperatureHumidity", "options":
+		[
+			{ "label": "Group 1", "value": 1 },
+			{ "label": "Group 2", "value": 2 },
+			{ "label": "Group 3", "value": 3 },
+			{ "label": "Group 4", "value": 4 },
+			{ "label": "Group 5", "value": 5 },
+			{ "label": "Group 6", "value": 6 },
+			{ "label": "Group 7", "value": 7 },
+			{ "label": "Group 8", "value": 8 },
+			{ "label": "Group 9", "value": 9 },
+			{ "label": "Group 9", "value": 10 },
+			{ "label": "Group A", "value": 11 },
+			{ "label": "Group B", "value": 12 },
+			{ "label": "Group C", "value": 13 },
+			{ "label": "Group D", "value": 14 },
+			{ "label": "Group E", "value": 15 },
+			{ "label": "Group F", "value": 16 }
+		]
+		},
+		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateHeating($id, $GroupTemperatureHumidity, 1);" }
 	]
 }
