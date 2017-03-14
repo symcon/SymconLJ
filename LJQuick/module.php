@@ -32,6 +32,16 @@
             IPS_SetVariableProfileValues("Volume.Liter", 0, 0, 0);
             IPS_SetVariableProfileText("Volume.Liter", "", " l");
 
+            IPS_CreateVariableProfile("Power.W", 2);
+            IPS_SetVariableProfileValues("Power.W", 0, 0, 0);
+            IPS_SetVariableProfileDigits("Power.W", 0);
+            IPS_SetVariableProfileText("Power.W", "", " W");
+
+            IPS_CreateVariableProfile("Flow.CubicMeterPerHour", 2);
+            IPS_SetVariableProfileValues("Flow.CubicMeterPerHour", 0, 0, 0);
+            IPS_SetVariableProfileDigits("Flow.CubicMeterPerHour", 3);
+            IPS_SetVariableProfileText("Flow.CubicMeterPerHour", "", " m³/h");
+
 		}
 		
 		/**
@@ -397,7 +407,7 @@
                         IPS_ApplyChanges($iid);
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                        IPS_SetVariableCustomProfile($vid, "~Watt.14490");
+                        IPS_SetVariableCustomProfile($vid, "Power.W");
                         IPS_SetName($vid, "Power Forward (GR ".$Group.", CH ".$Channel.")");
                     }
 
@@ -416,7 +426,7 @@
                         IPS_ApplyChanges($iid);
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                        IPS_SetVariableCustomProfile($vid, "~Watt.14490");
+                        IPS_SetVariableCustomProfile($vid, "Power.W");
                         IPS_SetName($vid, "Power Reverse (GR ".$Group.", CH ".$Channel.")");
                     }
 
@@ -556,7 +566,7 @@
                         IPS_ApplyChanges($iid);
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                        IPS_SetVariableCustomProfile($vid, "~Watt.14490");
+                        IPS_SetVariableCustomProfile($vid, "Power.W");
                         IPS_SetName($vid, "Power (GR ".$Group.", CH ".$Channel.")");
                     }
 
@@ -575,7 +585,7 @@
                         IPS_ApplyChanges($iid);
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                        IPS_SetVariableCustomProfile($vid, "~Flow");
+                        IPS_SetVariableCustomProfile($vid, "Flow.CubicMeterPerHour");
                         IPS_SetName($vid, "Flow (GR ".$Group.", CH ".$Channel.")");
                     }
 
