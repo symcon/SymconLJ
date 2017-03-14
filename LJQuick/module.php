@@ -753,7 +753,7 @@
                 IPS_SetPosition($sid, 1);
             }
 
-            for($Channel=1; $Channel<=9; $Channel++) {
+            for($Channel=0; $Channel<=9; $Channel++) {
 
                 //Status
                 $iid = @IPS_GetObjectIDByIdent("Heating_Status_".strtoupper(dechex($Group).$Channel), $sid);
