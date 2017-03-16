@@ -185,7 +185,7 @@
 
                     //Rename Status Variable
                     $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                    IPS_SetName($vid, "Switch (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Dim (GR ".$Group.", CH ".$Channel.")");
 
 				}
 			}
