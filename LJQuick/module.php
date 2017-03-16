@@ -91,6 +91,7 @@
 					IPS_SetName($iid, "Switch (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
 					IPS_SetIdent($iid, "Switch".strtoupper(dechex($Group)).$Channel);
 					IPS_SetParent($iid, $sid);
+					IPS_SetPosition($iid, $Channel * 10);
 					IPS_SetProperty($iid, "GroupFunction", "Switch");
 					IPS_SetProperty($iid, "GroupInterpretation", "Standard");
 					IPS_SetProperty($iid, "GroupAddress1", 15);
@@ -166,6 +167,7 @@
 					IPS_SetName($iid, "Dim (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
 					IPS_SetIdent($iid, "Dim".strtoupper(dechex($Group)).$Channel);
 					IPS_SetParent($iid, $sid);
+                    IPS_SetPosition($iid, $Channel * 10);
 					IPS_SetProperty($iid, "GroupFunction", "DimValue");
 					IPS_SetProperty($iid, "GroupInterpretation", "Percent");
 					IPS_SetProperty($iid, "GroupAddress1", 15);
@@ -241,6 +243,7 @@
 					IPS_SetName($iid, "Shutter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
 					IPS_SetIdent($iid, "Shutter".strtoupper(dechex($Group)).$Channel);
 					IPS_SetParent($iid, $sid);
+                    IPS_SetPosition($iid, $Channel * 10);
 					IPS_SetProperty($iid, "GroupMoveAddress1", 14);
 					IPS_SetProperty($iid, "GroupMoveAddress2", 0);
 					IPS_SetProperty($iid, "GroupMoveAddress3", ($Group*16)+$Channel);
@@ -355,6 +358,7 @@
                     IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                     IPS_SetIdent($iid, "Counter_SerialNumber_".strtoupper(dechex($Group)).$Channel);
                     IPS_SetParent($iid, $sid);
+                    IPS_SetPosition($iid, $Channel * 20 + 0);
                     IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                     IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                     IPS_SetProperty($iid, "GroupAddress1", 11);
@@ -373,6 +377,7 @@
                     IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                     IPS_SetIdent($iid, "Counter_Status_".strtoupper(dechex($Group)).$Channel);
                     IPS_SetParent($iid, $sid);
+                    IPS_SetPosition($iid, $Channel * 20 + 1);
                     IPS_SetProperty($iid, "GroupFunction", "Switch");
                     IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                     IPS_SetProperty($iid, "GroupAddress1", 11);
@@ -393,6 +398,7 @@
                     IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                     IPS_SetIdent($iid, "Counter_ReadMeter_".strtoupper(dechex($Group)).$Channel);
                     IPS_SetParent($iid, $sid);
+                    IPS_SetPosition($iid, $Channel * 20 + 2);
                     IPS_SetProperty($iid, "GroupFunction", "Switch");
                     IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                     IPS_SetProperty($iid, "GroupAddress1", 14);
@@ -413,6 +419,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_PowerForward_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 3);
                         IPS_SetProperty($iid, "GroupFunction", "FloatValue");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 11);
@@ -432,6 +439,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_PowerReverse_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 4);
                         IPS_SetProperty($iid, "GroupFunction", "FloatValue");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 11);
@@ -451,6 +459,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_EnergyForwardWh_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 5);
                         IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -470,6 +479,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_EnergyForwardkWh_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 6);
                         IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -489,6 +499,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_EnergyReverseWh_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 7);
                         IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -508,6 +519,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_EnergyReversekWh_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 8);
                         IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -531,6 +543,7 @@
 						IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
 						IPS_SetIdent($iid, "Counter_VolumeLiter_".strtoupper(dechex($Group)).$Channel);
 						IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 9);
 						IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
 						IPS_SetProperty($iid, "GroupInterpretation", "Standard");
 						IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -550,6 +563,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_VolumeM3_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 10);
                         IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -572,6 +586,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_Power_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 11);
                         IPS_SetProperty($iid, "GroupFunction", "FloatValue");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 11);
@@ -591,6 +606,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_Flow_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 12);
                         IPS_SetProperty($iid, "GroupFunction", "FloatValue");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 11);
@@ -610,6 +626,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_TemperatureForward_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 13);
                         IPS_SetProperty($iid, "GroupFunction", "Value");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 11);
@@ -629,6 +646,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_TemperatureReverse_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 14);
                         IPS_SetProperty($iid, "GroupFunction", "Value");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 11);
@@ -648,6 +666,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_EnergyHeatkWh_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 15);
                         IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -667,6 +686,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_EnergyHeatMWh_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 16);
                         IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -686,6 +706,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_EnergyCoolkWh_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 17);
                         IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -705,6 +726,7 @@
                         IPS_SetName($iid, "Counter (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Counter_EnergyCoolMWh_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 20 + 18);
                         IPS_SetProperty($iid, "GroupFunction", "32bitCounter");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 12);
@@ -776,6 +798,7 @@
                     IPS_SetName($iid, "Heating (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                     IPS_SetIdent($iid, "Heating_Status_".strtoupper(dechex($Group)).$Channel);
                     IPS_SetParent($iid, $sid);
+                    IPS_SetPosition($iid, $Channel * 10 + 0);
                     IPS_SetProperty($iid, "GroupFunction", "Switch");
                     IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                     IPS_SetProperty($iid, "GroupAddress1", 13);
@@ -796,6 +819,7 @@
                     IPS_SetName($iid, "Heating (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                     IPS_SetIdent($iid, "Heating_Temperature_".strtoupper(dechex($Group)).$Channel);
                     IPS_SetParent($iid, $sid);
+                    IPS_SetPosition($iid, $Channel * 10 + 1);
                     IPS_SetProperty($iid, "GroupFunction", "Value");
                     IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                     IPS_SetProperty($iid, "GroupAddress1", 13);
@@ -817,6 +841,7 @@
                         IPS_SetName($iid, "Heating (Group ".strtoupper(dechex($Group)).", Channel ".$Channel.")");
                         IPS_SetIdent($iid, "Heating_Humidity_".strtoupper(dechex($Group)).$Channel);
                         IPS_SetParent($iid, $sid);
+                        IPS_SetPosition($iid, $Channel * 10 + 2);
                         IPS_SetProperty($iid, "GroupFunction", "Value");
                         IPS_SetProperty($iid, "GroupInterpretation", "Standard");
                         IPS_SetProperty($iid, "GroupAddress1", 13);
