@@ -125,7 +125,7 @@
 
 					//Rename Status Variable
                     $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                    IPS_SetName($vid, "Switch (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Switch (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
 
 				}
 			}
@@ -201,7 +201,7 @@
 
                     //Rename Status Variable
                     $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                    IPS_SetName($vid, "Dim (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Dim (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
 
 				}
 			}
@@ -290,11 +290,11 @@
 
                     //Rename Status Variable
                     $vid = IPS_GetObjectIDByIdent("Status", $iid);
-                    IPS_SetName($vid, "Status (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Status (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
 
                     //Rename Action Variable
                     $vid = IPS_GetObjectIDByIdent("Action", $iid);
-                    IPS_SetName($vid, "Action (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Action (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
 
 				}
 			}
@@ -367,7 +367,7 @@
                     IPS_ApplyChanges($iid);
 
                     $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                    IPS_SetName($vid, "Serial Number (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Serial Number (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                 }
 
                 //Status
@@ -387,7 +387,7 @@
 
                     //Set as read-only
                     $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                    IPS_SetName($vid, "Status (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Status (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     IPS_SetVariableCustomAction($vid, 1);
                 }
 
@@ -407,7 +407,7 @@
                     IPS_ApplyChanges($iid);
 
                     $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                    IPS_SetName($vid, "Read Meter (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Read Meter (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                 }
 
                 if($Type == 0 /* Energy */) {
@@ -429,7 +429,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Power.W");
-                        IPS_SetName($vid, "Power Forward (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Power Forward (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Power Reverse (W)
@@ -449,7 +449,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Power.W");
-                        IPS_SetName($vid, "Power Reverse (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Power Reverse (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Energy Forward (Wh)
@@ -469,7 +469,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Electricity.Wh");
-                        IPS_SetName($vid, "Energy Forward (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Energy Forward (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Energy Forward (kWh)
@@ -489,7 +489,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Electricity.kWh");
-                        IPS_SetName($vid, "Energy Forward (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Energy Forward (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Energy Reverse (Wh)
@@ -509,7 +509,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Electricity.Wh");
-                        IPS_SetName($vid, "Energy Reverse (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Energy Reverse (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Energy Reverse (kWh)
@@ -529,7 +529,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Electricity.kWh");
-                        IPS_SetName($vid, "Energy Reverse (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Energy Reverse (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
 				}
@@ -553,7 +553,7 @@
 
 						$vid = IPS_GetObjectIDByIdent("Value", $iid);
 						IPS_SetVariableCustomProfile($vid, "Volume.Liter");
-                        IPS_SetName($vid, "Volume (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Volume (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
 					}
 
                     //Volume (m^3)
@@ -573,7 +573,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Volume.CubicMeter");
-                        IPS_SetName($vid, "Volume (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Volume (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
                 }
 
@@ -596,7 +596,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Power.W");
-                        IPS_SetName($vid, "Power (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Power (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Flow (m^3/h)
@@ -616,7 +616,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Flow.CubicMeterPerHour");
-                        IPS_SetName($vid, "Flow (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Flow (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Temperature Forward (°C)
@@ -636,7 +636,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "~Temperature");
-                        IPS_SetName($vid, "Temperature Forward (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Temperature Forward (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Temperature Reverse (°C)
@@ -656,7 +656,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "~Temperature");
-                        IPS_SetName($vid, "Temperature Reverse (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Temperature Reverse (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Energy Heat (kWh)
@@ -676,7 +676,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Electricity.kWh");
-                        IPS_SetName($vid, "Energy Heat (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Energy Heat (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Energy Heat (MWh)
@@ -696,7 +696,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Electricity.MWh");
-                        IPS_SetName($vid, "Energy Heat (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Energy Heat (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Energy Cool (kWh)
@@ -716,7 +716,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Electricity.kWh");
-                        IPS_SetName($vid, "Energy Cool (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Energy Cool (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                     //Energy Cool (MWh)
@@ -736,7 +736,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "Electricity.MWh");
-                        IPS_SetName($vid, "Energy Cool (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Energy Cool (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                 }
@@ -808,7 +808,7 @@
 
                     //Set as read-only
                     $vid = IPS_GetObjectIDByIdent("Value", $iid);
-                    IPS_SetName($vid, "Status (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Status (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     IPS_SetVariableCustomAction($vid, 1);
                 }
 
@@ -829,7 +829,7 @@
 
                     $vid = IPS_GetObjectIDByIdent("Value", $iid);
                     IPS_SetVariableCustomProfile($vid, "~Temperature");
-                    IPS_SetName($vid, "Temperature (GR ".$Group.", CH ".$Channel.")");
+                    IPS_SetName($vid, "Temperature (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                 }
 
                 if($Type == 1 /* Temperature/Humidity */) {
@@ -851,7 +851,7 @@
 
                         $vid = IPS_GetObjectIDByIdent("Value", $iid);
                         IPS_SetVariableCustomProfile($vid, "~Humidity.F");
-                        IPS_SetName($vid, "Humidity (GR ".$Group.", CH ".$Channel.")");
+                        IPS_SetName($vid, "Humidity (GR ".strtoupper(dechex($Group)).", CH ".$Channel.")");
                     }
 
                 }
