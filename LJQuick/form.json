@@ -13,13 +13,12 @@
 				{ "label": "Group 7", "value": 7 },
 				{ "label": "Group 8", "value": 8 },
 				{ "label": "Group 9", "value": 9 },
-				{ "label": "Group 9", "value": 10 },
-				{ "label": "Group A", "value": 11 },
-				{ "label": "Group B", "value": 12 },
-				{ "label": "Group C", "value": 13 },
-				{ "label": "Group D", "value": 14 },
-				{ "label": "Group E", "value": 15 },
-				{ "label": "Group F", "value": 16 }
+				{ "label": "Group A", "value": 10 },
+				{ "label": "Group B", "value": 11 },
+				{ "label": "Group C", "value": 12 },
+				{ "label": "Group D", "value": 13 },
+				{ "label": "Group E", "value": 14 },
+				{ "label": "Group F", "value": 15 }
 			]
 		},
 		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateSwitch($id, $GroupSwitch);" },
@@ -36,13 +35,12 @@
 				{ "label": "Group 7", "value": 7 },
 				{ "label": "Group 8", "value": 8 },
 				{ "label": "Group 9", "value": 9 },
-				{ "label": "Group 9", "value": 10 },
-				{ "label": "Group A", "value": 11 },
-				{ "label": "Group B", "value": 12 },
-				{ "label": "Group C", "value": 13 },
-				{ "label": "Group D", "value": 14 },
-				{ "label": "Group E", "value": 15 },
-				{ "label": "Group F", "value": 16 }
+				{ "label": "Group A", "value": 10 },
+				{ "label": "Group B", "value": 11 },
+				{ "label": "Group C", "value": 12 },
+				{ "label": "Group D", "value": 13 },
+				{ "label": "Group E", "value": 14 },
+				{ "label": "Group F", "value": 15 }
 			]
 		},
 		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateDim($id, $GroupDimming);" },
@@ -59,13 +57,12 @@
 				{ "label": "Group 7", "value": 7 },
 				{ "label": "Group 8", "value": 8 },
 				{ "label": "Group 9", "value": 9 },
-				{ "label": "Group 9", "value": 10 },
-				{ "label": "Group A", "value": 11 },
-				{ "label": "Group B", "value": 12 },
-				{ "label": "Group C", "value": 13 },
-				{ "label": "Group D", "value": 14 },
-				{ "label": "Group E", "value": 15 },
-				{ "label": "Group F", "value": 16 }
+				{ "label": "Group A", "value": 10 },
+				{ "label": "Group B", "value": 11 },
+				{ "label": "Group C", "value": 12 },
+				{ "label": "Group D", "value": 13 },
+				{ "label": "Group E", "value": 14 },
+				{ "label": "Group F", "value": 15 }
 			]
 		},
 		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateShutter($id, $GroupShutter);" },
@@ -82,13 +79,12 @@
 				{ "label": "Group 7", "value": 7 },
 				{ "label": "Group 8", "value": 8 },
 				{ "label": "Group 9", "value": 9 },
-				{ "label": "Group 9", "value": 10 },
-				{ "label": "Group A", "value": 11 },
-				{ "label": "Group B", "value": 12 },
-				{ "label": "Group C", "value": 13 },
-				{ "label": "Group D", "value": 14 },
-				{ "label": "Group E", "value": 15 },
-				{ "label": "Group F", "value": 16 }
+				{ "label": "Group A", "value": 10 },
+				{ "label": "Group B", "value": 11 },
+				{ "label": "Group C", "value": 12 },
+				{ "label": "Group D", "value": 13 },
+				{ "label": "Group E", "value": 14 },
+				{ "label": "Group F", "value": 15 }
 			]
 		},
 		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateCounter($id, $GroupEnergy, 0);" },
@@ -105,13 +101,12 @@
 			{ "label": "Group 7", "value": 7 },
 			{ "label": "Group 8", "value": 8 },
 			{ "label": "Group 9", "value": 9 },
-			{ "label": "Group 9", "value": 10 },
-			{ "label": "Group A", "value": 11 },
-			{ "label": "Group B", "value": 12 },
-			{ "label": "Group C", "value": 13 },
-			{ "label": "Group D", "value": 14 },
-			{ "label": "Group E", "value": 15 },
-			{ "label": "Group F", "value": 16 }
+			{ "label": "Group A", "value": 10 },
+			{ "label": "Group B", "value": 11 },
+			{ "label": "Group C", "value": 12 },
+			{ "label": "Group D", "value": 13 },
+			{ "label": "Group E", "value": 14 },
+			{ "label": "Group F", "value": 15 }
 		]
 		},
 		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateCounter($id, $GroupWaterGasOil, 1);" },
@@ -128,13 +123,12 @@
 			{ "label": "Group 7", "value": 7 },
 			{ "label": "Group 8", "value": 8 },
 			{ "label": "Group 9", "value": 9 },
-			{ "label": "Group 9", "value": 10 },
-			{ "label": "Group A", "value": 11 },
-			{ "label": "Group B", "value": 12 },
-			{ "label": "Group C", "value": 13 },
-			{ "label": "Group D", "value": 14 },
-			{ "label": "Group E", "value": 15 },
-			{ "label": "Group F", "value": 16 }
+			{ "label": "Group A", "value": 10 },
+			{ "label": "Group B", "value": 11 },
+			{ "label": "Group C", "value": 12 },
+			{ "label": "Group D", "value": 13 },
+			{ "label": "Group E", "value": 14 },
+			{ "label": "Group F", "value": 15 }
 		]
 		},
 		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateCounter($id, $GroupHeatQuantity, 2);" },
@@ -151,13 +145,12 @@
 			{ "label": "Group 7", "value": 7 },
 			{ "label": "Group 8", "value": 8 },
 			{ "label": "Group 9", "value": 9 },
-			{ "label": "Group 9", "value": 10 },
-			{ "label": "Group A", "value": 11 },
-			{ "label": "Group B", "value": 12 },
-			{ "label": "Group C", "value": 13 },
-			{ "label": "Group D", "value": 14 },
-			{ "label": "Group E", "value": 15 },
-			{ "label": "Group F", "value": 16 }
+			{ "label": "Group A", "value": 10 },
+			{ "label": "Group B", "value": 11 },
+			{ "label": "Group C", "value": 12 },
+			{ "label": "Group D", "value": 13 },
+			{ "label": "Group E", "value": 14 },
+			{ "label": "Group F", "value": 15 }
 		]
 		},
 		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateHeating($id, $GroupTemperature, 0);" },
@@ -174,13 +167,12 @@
 			{ "label": "Group 7", "value": 7 },
 			{ "label": "Group 8", "value": 8 },
 			{ "label": "Group 9", "value": 9 },
-			{ "label": "Group 9", "value": 10 },
-			{ "label": "Group A", "value": 11 },
-			{ "label": "Group B", "value": 12 },
-			{ "label": "Group C", "value": 13 },
-			{ "label": "Group D", "value": 14 },
-			{ "label": "Group E", "value": 15 },
-			{ "label": "Group F", "value": 16 }
+			{ "label": "Group A", "value": 10 },
+			{ "label": "Group B", "value": 11 },
+			{ "label": "Group C", "value": 12 },
+			{ "label": "Group D", "value": 13 },
+			{ "label": "Group E", "value": 14 },
+			{ "label": "Group F", "value": 15 }
 		]
 		},
 		{ "type": "Button", "label": "Generate", "onClick": "LJ_GenerateHeating($id, $GroupTemperatureHumidity, 1);" }
