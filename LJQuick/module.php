@@ -12,35 +12,49 @@
 			$this->ConnectParent("{1C902193-B044-43B8-9433-419F09C641B8}");
 
 			//We need our own profiles
-			IPS_CreateVariableProfile("Electricity.Wh", 1);
-			IPS_SetVariableProfileValues("Electricity.Wh", 0, 0, 0);
-			IPS_SetVariableProfileText("Electricity.Wh", "", " Wh");
+            if(!IPS_VariableProfileExists("Electricity.Wh")) {
+                IPS_CreateVariableProfile("Electricity.Wh", 1);
+                IPS_SetVariableProfileValues("Electricity.Wh", 0, 0, 0);
+                IPS_SetVariableProfileText("Electricity.Wh", "", " Wh");
+            }
 
-            IPS_CreateVariableProfile("Electricity.kWh", 1);
-            IPS_SetVariableProfileValues("Electricity.kWh", 0, 0, 0);
-            IPS_SetVariableProfileText("Electricity.kWh", "", " kWh");
+            if(!IPS_VariableProfileExists("Electricity.kWh")) {
+                IPS_CreateVariableProfile("Electricity.kWh", 1);
+                IPS_SetVariableProfileValues("Electricity.kWh", 0, 0, 0);
+                IPS_SetVariableProfileText("Electricity.kWh", "", " kWh");
+            }
 
-			IPS_CreateVariableProfile("Electricity.MWh", 1);
-            IPS_SetVariableProfileValues("Electricity.MWh", 0, 0, 0);
-            IPS_SetVariableProfileText("Electricity.MWh", "", " MWh");
+            if(!IPS_VariableProfileExists("Electricity.MWh")) {
+                IPS_CreateVariableProfile("Electricity.MWh", 1);
+                IPS_SetVariableProfileValues("Electricity.MWh", 0, 0, 0);
+                IPS_SetVariableProfileText("Electricity.MWh", "", " MWh");
+            }
 
-            IPS_CreateVariableProfile("Volume.CubicMeter", 1);
-            IPS_SetVariableProfileValues("Volume.CubicMeter", 0, 0, 0);
-            IPS_SetVariableProfileText("Volume.CubicMeter", "", " m³");
+            if(!IPS_VariableProfileExists("Volume.CubicMeter")) {
+                IPS_CreateVariableProfile("Volume.CubicMeter", 1);
+                IPS_SetVariableProfileValues("Volume.CubicMeter", 0, 0, 0);
+                IPS_SetVariableProfileText("Volume.CubicMeter", "", " m³");
+            }
 
-            IPS_CreateVariableProfile("Volume.Liter", 1);
-            IPS_SetVariableProfileValues("Volume.Liter", 0, 0, 0);
-            IPS_SetVariableProfileText("Volume.Liter", "", " l");
+            if(!IPS_VariableProfileExists("Volume.Liter")) {
+                IPS_CreateVariableProfile("Volume.Liter", 1);
+                IPS_SetVariableProfileValues("Volume.Liter", 0, 0, 0);
+                IPS_SetVariableProfileText("Volume.Liter", "", " l");
+            }
 
-            IPS_CreateVariableProfile("Power.W", 2);
-            IPS_SetVariableProfileValues("Power.W", 0, 0, 0);
-            IPS_SetVariableProfileDigits("Power.W", 0);
-            IPS_SetVariableProfileText("Power.W", "", " W");
+            if(!IPS_VariableProfileExists("Power.W")) {
+                IPS_CreateVariableProfile("Power.W", 2);
+                IPS_SetVariableProfileValues("Power.W", 0, 0, 0);
+                IPS_SetVariableProfileDigits("Power.W", 0);
+                IPS_SetVariableProfileText("Power.W", "", " W");
+            }
 
-            IPS_CreateVariableProfile("Flow.CubicMeterPerHour", 2);
-            IPS_SetVariableProfileValues("Flow.CubicMeterPerHour", 0, 0, 0);
-            IPS_SetVariableProfileDigits("Flow.CubicMeterPerHour", 3);
-            IPS_SetVariableProfileText("Flow.CubicMeterPerHour", "", " m³/h");
+            if(!IPS_VariableProfileExists("Flow.CubicMeterPerHour")) {
+                IPS_CreateVariableProfile("Flow.CubicMeterPerHour", 2);
+                IPS_SetVariableProfileValues("Flow.CubicMeterPerHour", 0, 0, 0);
+                IPS_SetVariableProfileDigits("Flow.CubicMeterPerHour", 3);
+                IPS_SetVariableProfileText("Flow.CubicMeterPerHour", "", " m³/h");
+            }
 
 		}
 		
