@@ -7,7 +7,10 @@
 		{
 			//Never delete this line!
 			parent::ApplyChanges();
-			
+
+			//Set receive filter to something that will never match
+			$this->SetReceiveDataFilter("(?!)");
+
 			//Connect to available splitter or create a new one
 			$this->ConnectParent("{1C902193-B044-43B8-9433-419F09C641B8}");
 
