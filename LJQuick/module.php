@@ -68,7 +68,7 @@
 		* LJ_GenerateSwitch($id, $Group);
 		*
 		*/
-		public function GenerateSwitch($Group)
+		public function GenerateSwitch(int $Group)
 		{
 			
 			$qid = @IPS_GetObjectIDByIdent("KNXQuick", 0);
@@ -144,7 +144,7 @@
 		* LJ_GenerateDim($id, $Group);
 		*
 		*/
-		public function GenerateDim($Group)
+		public function GenerateDim(int $Group)
 		{
 			
 			$qid = @IPS_GetObjectIDByIdent("KNXQuick", 0);
@@ -220,7 +220,7 @@
 		* LJ_GenerateShutter($id, $Group);
 		*
 		*/
-		public function GenerateShutter($Group)
+		public function GenerateShutter(int $Group)
 		{
 			
 			$qid = @IPS_GetObjectIDByIdent("KNXQuick", 0);
@@ -319,7 +319,7 @@
          * LJ_GenerateCounter($id, $Group, $Type);
          *
          */
-        public function GenerateCounter($Group, $Type)
+        public function GenerateCounter(int $Group, int $Type)
         {
 
         	switch($Type) {
@@ -762,7 +762,7 @@
          * LJ_GenerateHeating($id, $Group, $Type);
          *
          */
-        public function GenerateHeating($Group, $Type)
+        public function GenerateHeating(int $Group, int $Type)
         {
 
             switch($Type) {
