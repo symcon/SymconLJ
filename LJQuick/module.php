@@ -2,7 +2,15 @@
 
 	class LJQuick extends IPSModule
 	{
-		
+        public function Create()
+        {
+            //Never delete this line!
+            parent::Create();
+
+            $this->RegisterTimer("DateTimeTimer", 10 * 60 * 1000, 'LJ_SendDateTime($_IPS[\'TARGET\']);');
+            
+        }
+	    
 		public function ApplyChanges()
 		{
 			//Never delete this line!
@@ -865,6 +873,50 @@
 
         }
 
+        private function HasActiveParent()
+        {
+            $isActive = function($id) use (&$isActive) {
+                $i = IPS_GetInstance($id);
+                if ($i['ConnectionID'] == 0)
+                    return true;
+                $p = IPS_GetInstance($i['ConnectionID']);
+                if ($p['InstanceStatus'] != IS_ACTIVE)
+                    return false;
+                return $isActive($i['ConnectionID']);                  
+            };
+
+            return $isActive($this->InstanceID);
+        }
+
+        public function SendDateTime() {
+            
+            //Require at least Version 5.0 from 21.11.2018
+            if(IPS_GetKernelDate() <= 1542727105) {
+                return;
+            }
+            
+            $header = "\x00\x00\xF3\xFE"; //30/3/254
+            $data = "\x80" . 
+                chr(100 + date("y")) . 
+                chr(date("m")) . 
+                chr(date("d")) . 
+                chr((intval(date("N")) << 5) + intval(date("H"))) .
+                chr(date("i")) .
+                chr(date("s")) . 
+                chr(date("I") ? 1 : 0) .
+                chr(0);
+            
+            $json = [
+                "DataID" => "{42DFD4E4-5831-4A27-91B9-6FF1B2960260}",
+                "Header" => utf8_encode($header),
+                "Data" => utf8_encode($data)
+            ];
+            
+            if($this->HasActiveParent()) {
+                $this->SendDataToParent(json_encode($json));
+            }
+            
+        }
 
 	}
 
