@@ -69,6 +69,128 @@
 
 		}
 		
+		private function searchForMatchingConfiguration($create) {
+		    
+		    $instanceIDs = IPS_GetInstanceListByModuleID($create['moduleID']);
+		    $create['configuration']['GroupMapping'] = json_decode($create['configuration']['GroupMapping'], true);
+		    foreach($instanceIDs as $instanceID) {
+		        $configuration = json_decode(IPS_GetConfiguration($instanceID), true);
+		        $configuration['GroupMapping'] = json_decode($configuration['GroupMapping'], true);#
+		        foreach($create['configuration'] as $key => $value) {
+		            if($configuration[$key] != $value) {
+		                continue 2;
+                    }
+                }
+                return $instanceID;
+            }
+		    return 0;
+		    
+        }
+		
+        public function GetConfigurationForm()
+        {
+            $data = json_decode(file_get_contents(__DIR__ . '/form.json'));
+
+            $data->actions[0]->values[] = [
+                'address' => '',
+                'name'    => 'Switch',
+                'id'      => 1
+            ];
+
+            for($group = 0; $group <= 15; $group++) {            
+                for($channel = 0; $channel <= 9; $channel++) {
+                    $instance = [
+                        'address'    => "Group ".strtoupper(dechex($group)).", Channel ".$channel,
+                        'name'       => "Switch (Group ".strtoupper(dechex($group)).", Channel ".$channel.")",
+                        'instanceID' => 0,
+                        'create'     => [
+                            'moduleID'      => '{D62B95D3-0C5E-406E-B1D9-8D102E50F64B}',
+                            'location'      => ["KNX quick", "Switch"],
+                            'configuration' => [
+					            "GroupFunction" => "Switch",
+                                "GroupInterpretation" => "Standard",
+                                "GroupAddress1" => 15,
+                                "GroupAddress2" => 0,
+                                "GroupAddress3" => ($group*16)+$channel,
+                                "GroupMapping" => ($channel == 0) ? "{}" : json_encode([
+                                    [   
+                                        "GroupAddress1" => 15,
+                                        "GroupAddress2" => 0,
+                                        "GroupAddress3" => $group*16
+                                    ],
+                                    [
+                                        "GroupAddress1" => 15,
+                                        "GroupAddress2" => 0,
+                                        "GroupAddress3" => 240                            
+                                    ],
+                                    [
+                                        "GroupAddress1" => 15,
+                                        "GroupAddress2" => 1,
+                                        "GroupAddress3" => ($group*16)+$channel                            
+                                    ],
+                                    [
+                                        "GroupAddress1" => 15,
+                                        "GroupAddress2" => 0,
+                                        "GroupAddress3" => 240+$channel                            
+                                    ]
+                                ])
+                            ]
+                        ],
+                        'parent' => 1
+                    ];
+
+                    $instance['instanceID'] = $this->searchForMatchingConfiguration($instance['create']);
+                    
+                    $data->actions[0]->values[] = $instance;
+                }
+            }
+            
+            $data->actions[0]->values[] = [
+                'address' => '',
+                'name'    => 'Dimming',
+                'id'      => 2
+            ];
+
+            $data->actions[0]->values[] = [
+                'address' => '',
+                'name'    => 'Shutter',
+                'id'      => 3
+            ];
+
+            $data->actions[0]->values[] = [
+                'address' => '',
+                'name'    => 'Energy',
+                'id'      => 4
+            ];
+
+            $data->actions[0]->values[] = [
+                'address' => '',
+                'name'    => 'Water/Gas/Oil',
+                'id'      => 5
+            ];
+            
+            $data->actions[0]->values[] = [
+                'address' => '',
+                'name'    => 'HeatQuantity',
+                'id'      => 6
+            ];
+            
+            $data->actions[0]->values[] = [
+                'address' => '',
+                'name'    => 'Temperature',
+                'id'      => 7
+            ];               
+            
+            
+            $data->actions[0]->values[] = [
+                'address' => '',
+                'name'    => 'Temperature/Humidity',
+                'id'      => 8
+            ];         
+            
+            return json_encode($data);
+        }
+		
 		/**
 		* This function will be available automatically after the module is imported with the module control.
 		* Using the custom prefix this function will be callable from PHP and JSON-RPC through:
