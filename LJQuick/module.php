@@ -873,25 +873,10 @@
 
         }
 
-        private function HasActiveParent()
-        {
-            $isActive = function($id) use (&$isActive) {
-                $i = IPS_GetInstance($id);
-                if ($i['ConnectionID'] == 0)
-                    return true;
-                $p = IPS_GetInstance($i['ConnectionID']);
-                if ($p['InstanceStatus'] != IS_ACTIVE)
-                    return false;
-                return $isActive($i['ConnectionID']);                  
-            };
-
-            return $isActive($this->InstanceID);
-        }
-
         public function SendDateTime() {
             
-            //Require at least Version 5.0 from 21.11.2018
-            if(IPS_GetKernelDate() <= 1542727105) {
+            //Require at least Version 5.1 from 01.05.2019
+            if(IPS_GetKernelDate() <= 1556734554) {
                 return;
             }
             
