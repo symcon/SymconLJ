@@ -879,23 +879,33 @@
             if(IPS_GetKernelDate() <= 1556734554) {
                 return;
             }
-            
-            $header = "\x00\x00\xF3\xFE"; //30/3/254
-            $data = "\x80" . 
-                chr(100 + date("y")) . 
-                chr(date("m")) . 
-                chr(date("d")) . 
+
+            $data = "\x80" .
+                chr(100 + date("y")) .
+                chr(date("m")) .
+                chr(date("d")) .
                 chr((intval(date("N")) << 5) + intval(date("H"))) .
                 chr(date("i")) .
-                chr(date("s")) . 
+                chr(date("s")) .
                 chr(date("I") ? 1 : 0) .
                 chr(0);
-            
-            $json = [
-                "DataID" => "{42DFD4E4-5831-4A27-91B9-6FF1B2960260}",
-                "Header" => utf8_encode($header),
-                "Data" => utf8_encode($data)
-            ];
+
+            if(floatval(IPS_GetKernelVersion()) >= 5.4) {
+                $json = [
+                    "DataID" => "{42DFD4E4-5831-4A27-91B9-6FF1B2960260}",
+                    "GroupAddress1" => 30,
+                    "GroupAddress2" => 3,
+                    "GroupAddress3" => 254,
+                    "Data" => utf8_encode($data)
+                ];
+            } else {
+                $header = "\x00\x00\xF3\xFE"; //30/3/254
+                $json = [
+                    "DataID" => "{42DFD4E4-5831-4A27-91B9-6FF1B2960260}",
+                    "Header" => utf8_encode($header),
+                    "Data" => utf8_encode($data)
+                ];
+            }
             
             if($this->HasActiveParent()) {
                 $this->SendDataToParent(json_encode($json));
