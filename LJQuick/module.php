@@ -1,4 +1,4 @@
-<?
+<?php
 
 	class LJQuick extends IPSModule
 	{
