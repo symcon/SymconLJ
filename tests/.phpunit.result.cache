@@ -1,0 +1,1 @@
+{"version":1,"defects":{"SymconLJValidationTest::testValidateVerbrauchsverhalten":3,"SymconLJValidationTest::testValidateSymconLJModule":3},"times":{"SymconLJValidationTest::testValidateVerbrauchsverhalten":0.027,"SymconLJValidationTest::testValidateSymconLJModule":0.001,"SymconLJValidationTest::testNop":0}}

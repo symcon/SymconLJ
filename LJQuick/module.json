@@ -1,14 +1,17 @@
 {
-	"id": "{5070CC58-1F07-41CC-9652-B88B5C9B300B}",
-	"name": "LJQuick",
-	"type": 4,
-	"vendor": "",
-	"aliases": 
-	[
-		"KNX/EIB Configurator (KNX quick)"
-	],
-	"parentRequirements": ["{42DFD4E4-5831-4A27-91B9-6FF1B2960260}"],
-	"childRequirements": [],
-	"implemented": ["{8A4D3B17-F8D7-4905-877F-9E69CEC3D579}"],
-	"prefix": "LJ"
+    "id": "{5070CC58-1F07-41CC-9652-B88B5C9B300B}",
+    "name": "LJQuick",
+    "type": 4,
+    "vendor": "",
+    "aliases": [
+        "KNX/EIB Configurator (KNX quick)"
+    ],
+    "parentRequirements": [
+        "{42DFD4E4-5831-4A27-91B9-6FF1B2960260}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{8A4D3B17-F8D7-4905-877F-9E69CEC3D579}"
+    ],
+    "prefix": "LJ"
 }
