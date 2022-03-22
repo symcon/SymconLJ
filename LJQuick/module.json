@@ -13,5 +13,6 @@
     "implemented": [
         "{8A4D3B17-F8D7-4905-877F-9E69CEC3D579}"
     ],
-    "prefix": "LJ"
+    "prefix": "LJ",
+    "url": "https://github.com/symcon/SymconLJ/tree/master/LJQuick"
 }
