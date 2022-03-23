@@ -869,7 +869,7 @@ declare(strict_types=1);
                 chr(intval(date('d'))) .
                 chr((intval(date('N')) << 5) + intval(date('H'))) .
                 chr(intval(date('i'))) .
-                chr(intval(date('s')=) .
+                chr(intval(date('s'))) .
                 chr(intval(date('I')) ? 1 : 0) .
                 chr(0);
 
