@@ -1,7 +1,7 @@
 # LJQuick
-Das LJQuick-Module hilft dabei KNX Instanzen schnell und unkompliziert hinzuzufügen. 
+Das KNX quick (Lingg&Janke) Modul hilft dabei die KNX quick Instanzen schnell und unkompliziert hinzuzufügen. 
 Durch auswählen einer Gruppe und einem Klick auf den Button werden die Instanzen mit den richtigen Adressen erstellt. 
-Datum und Uhrzeit wird an die Übergeordnete Instanz gesendet. 
+Datum und Uhrzeit werden alle 10 Minuten an die KNX Adresse 30/3/254 gesendet.
 
 ### Inhaltsverzeichnis
 
@@ -22,12 +22,12 @@ Datum und Uhrzeit wird an die Übergeordnete Instanz gesendet.
 
 ### 3. Software-Installation
 
-* Über den Module Store das 'LJQuick'-Modul installieren.
+* Über den Module Store das 'KNX quick (Lingg&Janke)'-Modul installieren.
 * Alternativ über das Module Control folgende URL hinzufügen `https://github.com/symcon/SymconLJ`
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
- Unter 'Instanz hinzufügen' kann das 'LJQuick'-Modul mithilfe des Schnellfilters gefunden werden.  
+ Unter 'Instanz hinzufügen' kann das 'KNX quick (Lingg&Janke)'-Modul mithilfe des Schnellfilters gefunden werden.  
 	- Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
 
 __Konfigurationsseite__:
@@ -58,13 +58,13 @@ Die Statusvariablen/Kategorien/Profile werden automatisch angelegt. Das Löschen
 
 Name                   | Typ
 ---------------------- |--------------
-Electricity.Wh         | integer
-Electricity.kWh        | integer
-Electricity.MWh        | integer
-Volume.CubicMeter      | integer
-Volume.Liter           | integer
-Power.W                | float
-Flow.CubicMeterPerHour | float
+Electricity.Wh         | Integer
+Electricity.kWh        | Integer
+Electricity.MWh        | Integer
+Volume.CubicMeter      | Integer
+Volume.Liter           | Integer
+Power.W                | Float
+Flow.CubicMeterPerHour | Float
 
 ### 6. PHP-Befehlsreferenz
 
@@ -73,10 +73,13 @@ Flow.CubicMeterPerHour | float
 `boolean LJ_GenerateShutter(integer $Group);`
 `boolean LJ_GenerateCounter(integer $Group, integer $Type);`
 `boolean LJ_GenerateHeating(integer $Group, integer $Type);`
-
-Generieren KNX-Instanzen nach Typ mit einer mitgegebenen Gruppe.
-
-`boolean LJ_SendDateTime(integer $Group);`
+Generiert KNX-Instanzen nach Typ mit einer mitgegebenen Gruppe
 
 Beispiel:
-`LR_BeispielFunktion(12345);`
+`LJ_GenerateSwitch(1);`
+
+`boolean LJ_SendDateTime(integer $Group);`
+Sendet das aktuelle Datum/Uhrzeit auf den KNX-Bus
+
+Beispiel:
+`LJ_SendDateTime(1);`
