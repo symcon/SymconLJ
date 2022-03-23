@@ -864,13 +864,13 @@ declare(strict_types=1);
             }
 
             $data = "\x80" .
-                chr(100 + date('y')) .
-                chr(date('m')) .
-                chr(date('d')) .
+                chr(100 + intval(date('y'))) .
+                chr(intval(date('m'))) .
+                chr(intval(date('d'))) .
                 chr((intval(date('N')) << 5) + intval(date('H'))) .
-                chr(date('i')) .
-                chr(date('s')) .
-                chr(date('I') ? 1 : 0) .
+                chr(intval(date('i'))) .
+                chr(intval(date('s')=) .
+                chr(intval(date('I')) ? 1 : 0) .
                 chr(0);
 
             if (floatval(IPS_GetKernelVersion()) >= 5.4) {
