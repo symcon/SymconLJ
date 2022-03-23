@@ -1,0 +1,30 @@
+{
+    "translations": {
+        "de": {
+            "Group 1": "Gruppe 1",
+            "Group 2": "Gruppe 2",
+            "Group 3": "Gruppe 3",
+            "Group 4": "Gruppe 4",
+            "Group 5": "Gruppe 5",
+            "Group 6": "Gruppe 6",
+            "Group 7": "Gruppe 7",
+            "Group 8": "Gruppe 8",
+            "Group 9": "Gruppe 9",
+            "Group A": "Gruppe A",
+            "Group B": "Gruppe B",
+            "Group C": "Gruppe C",
+            "Group D": "Gruppe D",
+            "Group E": "Gruppe E",
+            "Group F": "Gruppe F",
+            "Generate": "Generieren",
+            "Switch: Please select Group and press Generate!": "Switch: Bitte Gruppe auswählen und Generieren drücken!",
+            "Dimming: Please select Group and press Generate!": "Dimming: Bitte Gruppe auswählen und Generieren drücken!",
+            "Shutter: Please select Group and press Generate!": "Shutter: Bitte Gruppe auswählen und Generieren drücken!",
+            "Energy: Please select Group and press Generate!": "Energie: Bitte Gruppe auswählen und Generieren drücken!",
+            "Water/Gas/Oil: Please select Group and press Generate!": "Wasser/Gas/Öl: Bitte Gruppe auswählen und Generieren drücken!",
+            "HeatQuantity: Please select Group and press Generate!": "HeartQuantity: Bitte Gruppe auswählen und Generieren drücken!",
+            "Temperature: Please select Group and press Generate!": "Temperatur: Bitte Gruppe auswählen und Generieren drücken!",
+            "Temperature/Humidity: Please select Group and press Generate!": "Temperatur/Feuchtigkeit: Bitte Gruppe auswählen und Generieren drücken!"
+        }
+    }
+}
