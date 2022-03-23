@@ -76,10 +76,10 @@ Flow.CubicMeterPerHour | Float
 Generiert KNX-Instanzen nach Typ mit einer mitgegebenen Gruppe
 
 Beispiel:
-`LJ_GenerateSwitch(1);`
+`LJ_GenerateSwitch(12345);`
 
 `boolean LJ_SendDateTime(integer $Group);`
 Sendet das aktuelle Datum/Uhrzeit auf den KNX-Bus
 
 Beispiel:
-`LJ_SendDateTime(1);`
+`LJ_SendDateTime(12345);`
