@@ -2,3 +2,4 @@
 **/.idea
 tests/.phpunit.*
 .vscode
+.php-cs-fixer.cache
