@@ -24,7 +24,9 @@
             "Water/Gas/Oil: Please select Group and press Generate!": "Wasser/Gas/Öl: Bitte Gruppe auswählen und Generieren drücken!",
             "HeatQuantity: Please select Group and press Generate!": "HeartQuantity: Bitte Gruppe auswählen und Generieren drücken!",
             "Temperature: Please select Group and press Generate!": "Temperatur: Bitte Gruppe auswählen und Generieren drücken!",
-            "Temperature/Humidity: Please select Group and press Generate!": "Temperatur/Feuchtigkeit: Bitte Gruppe auswählen und Generieren drücken!"
+            "Temperature/Humidity: Please select Group and press Generate!": "Temperatur/Feuchtigkeit: Bitte Gruppe auswählen und Generieren drücken!",
+            "KNX/EIB Configurator (KNX quick)": "KNX/EIB Konfigurator (KNX quick)",
+            "https://www.symcon.de/en/service/documentation/module-reference/ljquick/": "https://www.symcon.de/de/service/dokumentation/modulreferenz/ljquick/"
         }
     }
 }
