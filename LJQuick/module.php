@@ -40,7 +40,7 @@ class LJQuick extends IPSModule
                 'id'   => $id,
             ];
             $parent = $id;
-            for ($group = 12; $group < 16; $group++) { // Groups
+            for ($group = 7; $group < 16; $group++) { // Groups
                 $id++;
                 $groupParent = $id;
                 $tree[] = [
@@ -129,13 +129,13 @@ class LJQuick extends IPSModule
             chr(intval(date('I')) ? 1 : 0) .
             chr(0);
 
-            $json = [
-                'DataID'        => '{42DFD4E4-5831-4A27-91B9-6FF1B2960260}',
-                'Address1'      => 30,
-                'Address2'      => 3,
-                'Address3'      => 254,
-                'Data'          => utf8_encode($data)
-            ];
+        $json = [
+            'DataID'        => '{42DFD4E4-5831-4A27-91B9-6FF1B2960260}',
+            'Address1'      => 30,
+            'Address2'      => 3,
+            'Address3'      => 254,
+            'Data'          => utf8_encode($data)
+        ];
         if ($this->HasActiveParent()) {
             $this->SendDataToParent(json_encode($json));
         }
