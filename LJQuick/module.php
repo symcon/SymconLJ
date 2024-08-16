@@ -1,6 +1,6 @@
 <?php
-
 declare(strict_types=1);
+ini_set('ips.output_buffer', 2*1024*1024);
 
 class LJQuick extends IPSModule
 {
@@ -40,7 +40,7 @@ class LJQuick extends IPSModule
                 'id'   => $id,
             ];
             $parent = $id;
-            for ($group = 7; $group < 16; $group++) { // Groups
+            for ($group = 1; $group < 16; $group++) { // Groups
                 $id++;
                 $groupParent = $id;
                 $tree[] = [
