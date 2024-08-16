@@ -76,6 +76,11 @@ class LJQuick extends IPSModule
                             'configuration'=> [
                                 'GroupAddresses' => $addresses,
                                 'TTLID'          => ''
+                            ],
+                            'location' => [
+                                'KNX quick',
+                                $this->Translate($device),
+                                $this->Translate('Group') . ' ' . strtoupper(dechex($group))
                             ]
                         ]
                     ];

@@ -2,7 +2,14 @@
     "elements": [
         {
             "type": "Configurator",
-            "name": "KnxQuick"
+            "name": "KnxQuick",
+            "columns": [
+                {
+                    "caption": "Name",
+                    "name": "name",
+                    "width": "auto"
+                }
+            ]
         }
     ]
 }
