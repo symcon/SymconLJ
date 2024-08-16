@@ -3,7 +3,10 @@
     "author": "Symcon GmbH",
     "name": "KNX quick (Lingg&Janke)",
     "url": "https://github.com/symcon/SymconLJ",
-    "version": "1.0",
+    "compatibility": {
+        "version": "7.2"
+    },
+    "version": "2.0",
     "build": 0,
     "date": 0
 }
