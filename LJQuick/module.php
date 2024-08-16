@@ -44,7 +44,7 @@ class LJQuick extends IPSModule
                 $id++;
                 $groupParent = $id;
                 $tree[] = [
-                    'name'   => $this->Translate('Group' . ' ' . strtoupper(dechex($group))),
+                    'name'   => $this->Translate('Group') . ' ' . strtoupper(dechex($group)),
                     'id'     => $id,
                     'parent' => $parent
                 ];
@@ -55,14 +55,14 @@ class LJQuick extends IPSModule
                 for ($channel = !$isCounter ? 0 : 1; $channel <= 9; $channel++) {
                     $id++;
                     $addresses = match ($device) {
-                        'Switch'              => $this->GenerateSwitch($group, $channel),
-                        'Dimming'             => $this->GenerateDim($group, $channel),
-                        'Shutter'             => $this->GenerateShutter($group, $channel),
-                        'Energy'              => $this->GenerateCounter($group, 0, $channel),
-                        'WaterGasOil'         => $this->GenerateCounter($group, 1, $channel),
-                        'HeatQuantity'        => $this->GenerateCounter($group, 2, $channel),
-                        'Temperature'         => $this->GenerateHeating($group, 0, $channel),
-                        'TemperatureHumidity' => $this->GenerateHeating($group, 1, $channel),
+                        'Switch'              => $this->getSwitchAddresses($group, $channel),
+                        'Dimming'             => $this->getDimAddresses($group, $channel),
+                        'Shutter'             => $this->getShutterAddresses($group, $channel),
+                        'Energy'              => $this->getCounterAddresses($group, 0, $channel),
+                        'WaterGasOil'         => $this->getCounterAddresses($group, 1, $channel),
+                        'HeatQuantity'        => $this->getCounterAddresses($group, 2, $channel),
+                        'Temperature'         => $this->getHeatingAddresses($group, 0, $channel),
+                        'TemperatureHumidity' => $this->getHeatingAddresses($group, 1, $channel),
                         default               => '[]'
                     };
                     $tree[] = [
@@ -91,25 +91,21 @@ class LJQuick extends IPSModule
         }
 
         //Insert the Instance IDS
-
         //Get the Instances of the KNX Device
         $availableInstances = IPS_GetInstanceListByModuleID('{FB223058-3084-C5D0-C7A2-3B8D2E73FE8A}');
 
         //Look if the Addresses Matches
-        foreach ($availableInstances as $key => $available) {
+        foreach ($availableInstances as $available) {
             $instance = json_decode(IPS_GetConfiguration($available), true);
-            //get send Addresses
+            //Get instance addresses
             $addresses = [];
             $groupAddresses = json_decode($instance['GroupAddresses'], true);
             foreach ($groupAddresses as $address) {
-                if (is_array($address) && (array_key_exists('Address1', $address) && array_key_exists('Address2', $address) && array_key_exists('Address3', $address))) {
-                    //var_dump($address);
-                    $addresses[] = $address['Address1'] . '/' . $address['Address2'] . '/' . $address['Address3'];
-                }
+                $addresses[] = $address['Address1'] . '/' . $address['Address2'] . '/' . $address['Address3'];
             }
             if ($instance['GroupAddresses'] !== '[]') {
                 $treeID = array_search($addresses, $fastMatcher);
-                // get the corresponding tree id
+                //Get the corresponding tree id
                 $treeKey = array_search($treeID, array_column($tree, 'id'));
                 if (array_key_exists('create', $tree[$treeKey])) {
                     $tree[$treeKey]['instanceID'] = $available;
@@ -121,7 +117,31 @@ class LJQuick extends IPSModule
         return json_encode($form);
     }
 
-    public function GenerateSwitch(int $group, int $channel): string
+    public function SendDateTime()
+    {
+        $data = "\x80" .
+            chr(100 + intval(date('y'))) .
+            chr(intval(date('m'))) .
+            chr(intval(date('d'))) .
+            chr((intval(date('N')) << 5) + intval(date('H'))) .
+            chr(intval(date('i'))) .
+            chr(intval(date('s'))) .
+            chr(intval(date('I')) ? 1 : 0) .
+            chr(0);
+
+            $json = [
+                'DataID'        => '{42DFD4E4-5831-4A27-91B9-6FF1B2960260}',
+                'Address1'      => 30,
+                'Address2'      => 3,
+                'Address3'      => 254,
+                'Data'          => utf8_encode($data)
+            ];
+        if ($this->HasActiveParent()) {
+            $this->SendDataToParent(json_encode($json));
+        }
+    }
+
+    private function getSwitchAddresses(int $group, int $channel): string
     {
 
         return json_encode(
@@ -159,7 +179,7 @@ class LJQuick extends IPSModule
         );
     }
 
-    public function GenerateDim(int $group, int $channel): string
+    private function getDimAddresses(int $group, int $channel): string
     {
         return json_encode(
             [[
@@ -196,7 +216,7 @@ class LJQuick extends IPSModule
         );
     }
 
-    public function GenerateShutter(int $group, $channel)
+    private function getShutterAddresses(int $group, int $channel)
     {
         return json_encode([[
             'Address1'           => 14,
@@ -262,7 +282,7 @@ class LJQuick extends IPSModule
      *  2 = Heat Quantity
      *
      */
-    public function GenerateCounter(int $group, int $type, int $channel): string
+    private function getCounterAddresses(int $group, int $type, int $channel): string
     {
         switch ($type) {
             case 0:
@@ -614,18 +634,13 @@ class LJQuick extends IPSModule
     }
 
     /**
-     * This function will be available automatically after the module is imported with the module control.
-     * Using the custom prefix this function will be callable from PHP and JSON-RPC through:
-     *
      * Type:
      *
      * 	0 = Temperature
      * 	1 = Temperature/Humidity
      *
-     * LJ_GenerateHeating($id, $group, $type);
-     *
      */
-    public function GenerateHeating(int $group, int $type, int $channel)
+    private function getHeatingAddresses(int $group, int $type, int $channel)
     {
         //Status
         $addresses = [[
@@ -682,46 +697,6 @@ class LJQuick extends IPSModule
         }
 
         return json_encode($addresses);
-    }
-
-    public function SendDateTime()
-    {
-
-        //Require at least Version 5.1 from 01.05.2019
-        if (IPS_GetKernelDate() <= 1556734554) {
-            return;
-        }
-
-        $data = "\x80" .
-            chr(100 + intval(date('y'))) .
-            chr(intval(date('m'))) .
-            chr(intval(date('d'))) .
-            chr((intval(date('N')) << 5) + intval(date('H'))) .
-            chr(intval(date('i'))) .
-            chr(intval(date('s'))) .
-            chr(intval(date('I')) ? 1 : 0) .
-            chr(0);
-
-        if (floatval(IPS_GetKernelVersion()) >= 5.4) {
-            $json = [
-                'DataID'        => '{42DFD4E4-5831-4A27-91B9-6FF1B2960260}',
-                'Address1'      => 30,
-                'Address2'      => 3,
-                'Address3'      => 254,
-                'Data'          => utf8_encode($data)
-            ];
-        } else {
-            $header = "\x00\x00\xF3\xFE"; //30/3/254
-            $json = [
-                'DataID' => '{42DFD4E4-5831-4A27-91B9-6FF1B2960260}',
-                'Header' => utf8_encode($header),
-                'Data'   => utf8_encode($data)
-            ];
-        }
-
-        if ($this->HasActiveParent()) {
-            $this->SendDataToParent(json_encode($json));
-        }
     }
 
 }

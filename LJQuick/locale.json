@@ -11,7 +11,6 @@
             "HeatQuantity": "Wärmemengenzähler",
             "Temperature": "Temperatur",
             "TemperatureHumidity": "Temperatur/Luftfeuchtigkeit",
-            "Generate": "Generieren",
             "KNX/EIB Configurator (KNX quick)": "KNX/EIB Konfigurator (KNX quick)",
             "https://www.symcon.de/en/service/documentation/module-reference/ljquick/": "https://www.symcon.de/de/service/dokumentation/modulreferenz/ljquick/"
         }
