@@ -78,7 +78,14 @@ class LJQuick extends IPSModule
                             ]
                         ]
                     ];
-                    $fastMatcher[$id] = $addresses;
+                    //get the send addresses
+                    $addresses = json_decode($addresses, true);
+                    $sendAddresses = [];
+                    foreach ($addresses as $address) {
+                        $sendAddresses[] = $address['Address1'] . '/' . $address['Address2'] . '/' . $address['Address3'];
+                    }
+
+                    $fastMatcher[$id] = $sendAddresses;
                 }
             }
         }
@@ -91,13 +98,22 @@ class LJQuick extends IPSModule
         //Look if the Addresses Matches
         foreach ($availableInstances as $key => $available) {
             $instance = json_decode(IPS_GetConfiguration($available), true);
-            if ($instance['GroupAddresses'] !== '[]'
-                && in_array($instance['GroupAddresses'], $fastMatcher)
-            ) {
-                $treeID = array_search($instance['GroupAddresses'], $fastMatcher);
+            //get send Addresses
+            $addresses = [];
+            $groupAddresses = json_decode($instance['GroupAddresses'], true);
+            foreach ($groupAddresses as $address) {
+                if (is_array($address) && (array_key_exists('Address1', $address) && array_key_exists('Address2', $address) && array_key_exists('Address3', $address))) {
+                    //var_dump($address);
+                    $addresses[] = $address['Address1'] . '/' . $address['Address2'] . '/' . $address['Address3'];
+                }
+            }
+            if ($instance['GroupAddresses'] !== '[]') {
+                $treeID = array_search($addresses, $fastMatcher);
                 // get the corresponding tree id
                 $treeKey = array_search($treeID, array_column($tree, 'id'));
-                $tree[$treeKey]['instanceID'] = $available;
+                if (array_key_exists('create', $tree[$treeKey])) {
+                    $tree[$treeKey]['instanceID'] = $available;
+                }
             }
         }
 
