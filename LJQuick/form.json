@@ -2,7 +2,7 @@
     "elements": [
         {
             "type": "Configurator",
-            "rowCount": 10
+            "name": "KnxQuick"
         }
     ]
 }

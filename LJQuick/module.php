@@ -32,221 +32,209 @@ class LJQuick extends IPSModule
 
         $tree = [];
         $id = 0;
+        $fastMatcher = [];
         foreach ($devices as $device) {
             $id++;
             $tree[] = [
-                'name' => $device,
+                'name' => $this->Translate($device),
                 'id'   => $id,
             ];
             $parent = $id;
-            for ($i = 10; $i < 16; $i++) {
+            for ($group = 12; $group < 16; $group++) { // Groups
                 $id++;
+                $groupParent = $id;
                 $tree[] = [
-                    'name'   => $this->Translate('Group' . ' ' . strtoupper(dechex($i))),
-                    'parent' => $parent,
+                    'name'   => $this->Translate('Group' . ' ' . strtoupper(dechex($group))),
                     'id'     => $id,
-                    'create' => [
-                        'moduleID'     => '{FB223058-3084-C5D0-C7A2-3B8D2E73FE8A}',
-                        'configuration'=> [
-                            'GroupAddresses' => match ($device) {
-                                'Switch'              => $this->GenerateSwitch($i),
-                                'Dimming'             => $this->GenerateDim($i),
-                                'Shutter'             => $this->GenerateShutter($i),
-                                'Energy'              => $this->GenerateCounter($i, 0),
-                                'WaterGasOil'         => $this->GenerateCounter($i, 1),
-                                'HeatQuantity'        => $this->GenerateCounter($i, 2),
-                                'Temperature'         => $this->GenerateHeating($i, 0),
-                                'TemperatureHumidity' => $this->GenerateHeating($i, 1),
-                            },
-                            'TTLID'          => ''
-                        ]
-                    ]
+                    'parent' => $parent
                 ];
+                $isCounter = match ($device) {
+                    'Energy', 'WaterGasOil', 'HeatQuantity' => true,
+                    default => false
+                };
+                for ($channel = !$isCounter ? 0 : 1; $channel <= 9; $channel++) {
+                    $id++;
+                    $addresses = match ($device) {
+                        'Switch'              => $this->GenerateSwitch($group, $channel),
+                        'Dimming'             => $this->GenerateDim($group, $channel),
+                        'Shutter'             => $this->GenerateShutter($group, $channel),
+                        'Energy'              => $this->GenerateCounter($group, 0, $channel),
+                        'WaterGasOil'         => $this->GenerateCounter($group, 1, $channel),
+                        'HeatQuantity'        => $this->GenerateCounter($group, 2, $channel),
+                        'Temperature'         => $this->GenerateHeating($group, 0, $channel),
+                        'TemperatureHumidity' => $this->GenerateHeating($group, 1, $channel),
+                        default               => '[]'
+                    };
+                    $tree[] = [
+                        'name'   => $this->Translate('Channel') . ' ' . $channel,
+                        'parent' => $groupParent,
+                        'id'     => $id,
+                        'create' => [
+                            'moduleID'     => '{FB223058-3084-C5D0-C7A2-3B8D2E73FE8A}',
+                            'name'         => sprintf('%s (%s %X, %s %d)', $this->Translate($device), $this->Translate('Group'), $group, $this->Translate('Channel'), $channel),
+                            'configuration'=> [
+                                'GroupAddresses' => $addresses,
+                                'TTLID'          => ''
+                            ]
+                        ]
+                    ];
+                    $fastMatcher[$id] = $addresses;
+                }
+            }
+        }
+
+        //Insert the Instance IDS
+
+        //Get the Instances of the KNX Device
+        $availableInstances = IPS_GetInstanceListByModuleID('{FB223058-3084-C5D0-C7A2-3B8D2E73FE8A}');
+
+        //Look if the Addresses Matches
+        foreach ($availableInstances as $key => $available) {
+            $instance = json_decode(IPS_GetConfiguration($available), true);
+            if ($instance['GroupAddresses'] !== '[]'
+                && in_array($instance['GroupAddresses'], $fastMatcher)
+            ) {
+                $treeID = array_search($instance['GroupAddresses'], $fastMatcher);
+                // get the corresponding tree id
+                $treeKey = array_search($treeID, array_column($tree, 'id'));
+                $tree[$treeKey]['instanceID'] = $available;
             }
         }
 
         $form['elements'][0]['values'] = $tree;
-        //  var_dump($form);
         return json_encode($form);
     }
 
-    public function GenerateSwitch(int $Group): string
+    public function GenerateSwitch(int $group, int $channel): string
     {
-        $addresses = [];
-        for ($Channel = 0; $Channel <= 9; $Channel++) {
-            $mapping = [];
-            if ($Channel > 0) {
-                $mapping[] = [
-                    'Address1' => 15,
-                    'Address2' => 0,
-                    'Address3' => $Group * 16
-                ];
-                $mapping[] = [
-                    'Address1' => 15,
-                    'Address2' => 1,
-                    'Address3' => ($Group * 16) + $Channel
-                ];
-                $mapping[] = [
-                    'Address1' => 15,
-                    'Address2' => 0,
-                    'Address3' => 240
-                ];
-                $mapping[] = [
-                    'Address1' => 15,
-                    'Address2' => 0,
-                    'Address3' => 240 + $Channel
-                ];
-            }
-            $addresses[] = [
+
+        return json_encode(
+            [[
                 'Address1'           => 15,
                 'Address2'           => 0,
-                'Address3'           => ($Group * 16) + $Channel, 'Tag' => 'electrical',
-                //'Name' => 'Switch Channel'. $Channel,
+                'Address3'           => ($group * 16) + $channel,
+                'Tag'                => 'lighting',
                 'SubTag'             => '',
                 'Type'               => 1,
                 'Dimension'          => 1,
-                'Mapping'            => $mapping,
+                'Mapping'            => $channel > 0 ? [[
+                    'Address1' => 15,
+                    'Address2' => 0,
+                    'Address3' => $group * 16
+                ], [
+                    'Address1' => 15,
+                    'Address2' => 1,
+                    'Address3' => ($group * 16) + $channel
+                ], [
+                    'Address1' => 15,
+                    'Address2' => 0,
+                    'Address3' => 240
+                ], [
+                    'Address1' => 15,
+                    'Address2' => 0,
+                    'Address3' => 240 + $channel
+                ]] : [],
                 'CapabilityRead'     => boolval(false),
                 'CapabilityWrite'    => boolval(true),
                 'CapabilityReceive'  => boolval(true),
                 'CapabilityTransmit' => boolval(false),
                 'EmulateStatus'      => boolval(false)
-            ];
-        }
-        return json_encode($addresses);
+            ]]
+        );
     }
 
-    public function GenerateDim(int $Group)
+    public function GenerateDim(int $group, int $channel): string
     {
-        $addresses = [];
-        for ($Channel = 0; $Channel <= 9; $Channel++) {
-            $mapping = [];
-            if ($Channel > 0) {
-                $mapping[] = [
-                    'Address1' => 15,
-                    'Address2' => 4,
-                    'Address3' => $Group * 16
-                ];
-                $mapping[] = [
-                    'Address1' => 15,
-                    'Address2' => 6,
-                    'Address3' => ($Group * 16) + $Channel
-                ];
-                $mapping[] = [
-                    'Address1' => 15,
-                    'Address2' => 4,
-                    'Address3' => 240
-                ];
-                $mapping[] = [
-                    'Address1' => 15,
-                    'Address2' => 4,
-                    'Address3' => 240 + $Channel
-                ];
-            }
-            $addresses[] = [
+        return json_encode(
+            [[
                 'Address1'           => 15,
                 'Address2'           => 4,
-                'Address3'           => ($Group * 16) + $Channel,
-                'Tag'                => 'electrical',
+                'Address3'           => ($group * 16) + $channel,
+                'Tag'                => 'lighting',
                 'SubTag'             => '',
                 'Type'               => 5,
                 'Dimension'          => 1,
-                'Mapping'            => $mapping,
+                'Mapping'            => $channel > 0 ? [[
+                    'Address1' => 15,
+                    'Address2' => 4,
+                    'Address3' => $group * 16
+                ], [
+                    'Address1' => 15,
+                    'Address2' => 6,
+                    'Address3' => ($group * 16) + $channel
+                ], [
+                    'Address1' => 15,
+                    'Address2' => 4,
+                    'Address3' => 240
+                ], [
+                    'Address1' => 15,
+                    'Address2' => 4,
+                    'Address3' => 240 + $channel
+                ]] : [],
                 'CapabilityRead'     => boolval(false),
                 'CapabilityWrite'    => boolval(true),
                 'CapabilityReceive'  => boolval(true),
                 'CapabilityTransmit' => boolval(false),
                 'EmulateStatus'      => boolval(true)
-            ];
-        }
-        return json_encode($addresses);
+            ]]
+        );
     }
 
-    public function GenerateShutter(int $Group)
+    public function GenerateShutter(int $group, $channel)
     {
-        $qid = @IPS_GetObjectIDByIdent('KNXQuick', 0);
-        if ($qid === false) {
-            $qid = IPS_CreateCategory();
-            IPS_SetName($qid, 'KNX quick');
-            IPS_SetIdent($qid, 'KNXQuick');
-        }
-
-        $sid = @IPS_GetObjectIDByIdent('Shutter', $qid);
-        if ($sid === false) {
-            $sid = IPS_CreateCategory();
-            IPS_SetName($sid, 'Shutter');
-            IPS_SetIdent($sid, 'Shutter');
-            IPS_SetParent($sid, $qid);
-            IPS_SetPosition($sid, 2);
-        }
-
-        for ($Channel = 0; $Channel <= 9; $Channel++) {
-            $mappingMove = [];
-            $mappingStop = [];
-            if ($Channel > 0) {
-
-                $mappingMove[] = [
-                    'Address1' => 14,
-                    'Address2' => 0,
-                    'Address3' => $Group * 16
-                ];
-                $mappingMove[] = [
-                    'Address1' => 14,
-                    'Address2' => 0,
-                    'Address3' => 240
-                ];
-                $mappingMove[] = [
-                    'Address1' => 14,
-                    'Address2' => 0,
-                    'Address3' => 240 + $Channel
-                ];
-                $mappingStop[] = [
-                    'Address1' => 14,
-                    'Address2' => 1,
-                    'Address3' => $Group * 16
-                ];
-                $mappingStop[] = [
-                    'Address1' => 14,
-                    'Address2' => 1,
-                    'Address3' => 240
-                ];
-                $mappingStop[] = [
-                    'Address1' => 14,
-                    'Address2' => 1,
-                    'Address3' => 240 + $Channel
-                ];
-            }
-
-            $addresses = [[
-                'Address1'           => 14,
-                'Address2'           => 0,
-                'Address3'           => ($Group * 16) + $Channel,
-                'Tag'                => 'shutter',
-                'SubTag'             => '',
-                'Type'               => 1,
-                'Dimension'          => 1,
-                'Mapping'            => $mappingMove,
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+        return json_encode([[
+            'Address1'           => 14,
+            'Address2'           => 0,
+            'Address3'           => ($group * 16) + $channel,
+            'Tag'                => 'shading',
+            'SubTag'             => '',
+            'Type'               => 1,
+            'Dimension'          => 1,
+            'Mapping'            => $channel > 0 ? [[
+                'Address1' => 14,
+                'Address2' => 0,
+                'Address3' => $group * 16
             ], [
-                'Address1'           => 15,
-                'Address2'           => 0,
-                'Address3'           => ($Group * 16) + $Channel, 'Tag' => 'electrical',
-                'SubTag'             => '',
-                'Type'               => 1,
-                'Dimension'          => 1,
-                'Mapping'            => $mappingStop,
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
-            ]];
-        }
-        return json_encode($addresses);
+                'Address1' => 14,
+                'Address2' => 0,
+                'Address3' => 240
+            ], [
+                'Address1' => 14,
+                'Address2' => 0,
+                'Address3' => 240 + $channel
+            ]] : [],
+            'CapabilityRead'     => boolval(false),
+            'CapabilityWrite'    => boolval(true),
+            'CapabilityReceive'  => boolval(true),
+            'CapabilityTransmit' => boolval(false),
+            'EmulateStatus'      => boolval(true)
+        ], [
+            'Address1'           => 14,
+            'Address2'           => 1,
+            'Address3'           => ($group * 16) + $channel,
+            'Tag'                => 'shading',
+            'SubTag'             => 'lamella',
+            'Type'               => 1,
+            'Dimension'          => 1,
+            'Mapping'            => $channel > 0 ? [[
+                'Address1' => 14,
+                'Address2' => 1,
+                'Address3' => $group * 16
+            ], [
+                'Address1' => 14,
+                'Address2' => 1,
+                'Address3' => 240
+            ], [
+                'Address1' => 14,
+                'Address2' => 1,
+                'Address3' => 240 + $channel
+            ]] : [],
+            'CapabilityRead'     => boolval(false),
+            'CapabilityWrite'    => boolval(true),
+            'CapabilityReceive'  => boolval(true),
+            'CapabilityTransmit' => boolval(false),
+            'EmulateStatus'      => boolval(true)
+        ]]);
     }
 
     /**
@@ -258,32 +246,83 @@ class LJQuick extends IPSModule
      *  2 = Heat Quantity
      *
      */
-    public function GenerateCounter(int $Group, int $Type)
+    public function GenerateCounter(int $group, int $type, int $channel): string
     {
-        switch ($Type) {
+        switch ($type) {
             case 0:
-                $TypeName = 'Energy';
+                $tag = 'electrical';
                 break;
             case 1:
-                $TypeName = 'Water, Gas, Oil';
+                $tag = 'heating';
                 break;
             case 2:
-                $TypeName = 'Heat Quantity';
+                $tag = 'domesticHotWater';
                 break;
             default:
                 die('Invalid type!');
         }
 
-        $addresses = [];
-        for ($Channel = 1; $Channel <= 9; $Channel++) {
-            //SerialNumber (S/N)
+        //SerialNumber (S/N)
+        $addresses = [[
+            'Address1'           => 11,
+            'Address2'           => 6,
+            'Address3'           => ($group * 16) + $channel,
+            'Type'               => 12,
+            'Dimension'          => 0,
+            'Tag'                => $tag,
+            'SubTag'             => '',
+            'Mapping'            => [],
+            'CapabilityRead'     => boolval(false),
+            'CapabilityWrite'    => boolval(true),
+            'CapabilityReceive'  => boolval(true),
+            'CapabilityTransmit' => boolval(false),
+            'EmulateStatus'      => boolval(true)
+        ]];
+
+        //Status
+        $addresses[] = [
+            'Address1'           => 11,
+            'Address2'           => 7,
+            'Address3'           => ($group * 16) + $channel,
+            'Type'               => 1,
+            'Dimension'          => 0,
+            'Tag'                => $tag,
+            'SubTag'             => '',
+            'Mapping'            => [],
+            'CapabilityRead'     => boolval(false),
+            'CapabilityWrite'    => boolval(true),
+            'CapabilityReceive'  => boolval(true),
+            'CapabilityTransmit' => boolval(false),
+            'EmulateStatus'      => boolval(true)
+        ];
+
+        //Read Meter
+        $addresses[] = [
+            'Address1'           => 14,
+            'Address2'           => 7,
+            'Address3'           => ($group * 16) + $channel,
+            'Type'               => 1,
+            'Dimension'          => 0,
+            'Tag'                => $tag,
+            'SubTag'             => '',
+            'Mapping'            => [],
+            'CapabilityRead'     => boolval(false),
+            'CapabilityWrite'    => boolval(true),
+            'CapabilityReceive'  => boolval(true),
+            'CapabilityTransmit' => boolval(false),
+            'EmulateStatus'      => boolval(true)
+        ];
+
+        if ($type == 0 /* Energy */) {
+
+            //Power Forward (W)
             $addresses[] = [
                 'Address1'           => 11,
-                'Address2'           => 6,
-                'Address3'           => ($Group * 16) + $Channel,
-                'Type'               => 12,
-                'Dimension'          => 0,
-                'Tag'                => 'electrical',
+                'Address2'           => 0,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 14,
+                'Dimension'          => 56,
+                'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
                 'CapabilityRead'     => boolval(false),
@@ -293,14 +332,14 @@ class LJQuick extends IPSModule
                 'EmulateStatus'      => boolval(true)
             ];
 
-            //Status
+            //Power Reverse (W)
             $addresses[] = [
                 'Address1'           => 11,
-                'Address2'           => 7,
-                'Address3'           => ($Group * 16) + $Channel,
-                'Type'               => 1,
-                'Dimension'          => 0,
-                'Tag'                => 'electrical',
+                'Address2'           => 1,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 14,
+                'Dimension'          => 56,
+                'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
                 'CapabilityRead'     => boolval(false),
@@ -310,14 +349,14 @@ class LJQuick extends IPSModule
                 'EmulateStatus'      => boolval(true)
             ];
 
-            //Read Meter
+            //Energy Forward (Wh)
             $addresses[] = [
-                'Address1'           => 14,
-                'Address2'           => 7,
-                'Address3'           => ($Group * 16) + $Channel,
-                'Type'               => 1,
-                'Dimension'          => 0,
-                'Tag'                => 'electrical',
+                'Address1'           => 12,
+                'Address2'           => 0,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 13,
+                'Dimension'          => 10,
+                'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
                 'CapabilityRead'     => boolval(false),
@@ -327,287 +366,234 @@ class LJQuick extends IPSModule
                 'EmulateStatus'      => boolval(true)
             ];
 
-            if ($Type == 0 /* Energy */) {
+            //Energy Forward (kWh)
+            $addresses[] = [
+                'Address1'           => 12,
+                'Address2'           => 1,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 13,
+                'Dimension'          => 13,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
 
-                //Power Forward (W)
-                $addresses[] = [
-                    'Address1'           => 11,
-                    'Address2'           => 0,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 14,
-                    'Dimension'          => 0,
-                    'Tag'                => 'electrical',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
+            //Energy Reverse (Wh)
+            $addresses[] = [
+                'Address1'           => 12,
+                'Address2'           => 3,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 13,
+                'Dimension'          => 10,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
 
-                //Power Reverse (W)
-                $addresses[] = [
-                    'Address1'           => 11,
-                    'Address2'           => 1,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 14,
-                    'Dimension'          => 0,
-                    'Tag'                => 'electrical',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Energy Forward (Wh)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 0,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'electrical',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Energy Forward (kWh)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 1,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'electrical',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Energy Reverse (Wh)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 3,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'electrical',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Energy Reverse (kWh)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 4,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'electrical',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-            }
-
-            if ($Type == 1 /* Water, Gas, Oil */ || $Type == 2 /* Heat Quantity */) {
-
-                //Volume (l)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 6,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'domesticHotWater',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Volume (m^3)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 7,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'domesticHotWater',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-            }
-
-            if ($Type == 2 /* Heat Quantity */) {
-
-                //Power (W)
-                $addresses[] = [
-                    'Address1'           => 11,
-                    'Address2'           => 0,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 14,
-                    'Dimension'          => 0,
-                    'Tag'                => 'heating',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Flow (m^3/h)
-                $addresses[] = [
-                    'Address1'           => 11,
-                    'Address2'           => 2,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 14,
-                    'Dimension'          => 0,
-                    'Tag'                => 'heating',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Temperature Forward (°C)
-                $addresses[] = [
-                    'Address1'           => 11,
-                    'Address2'           => 4,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 14,
-                    'Dimension'          => 0,
-                    'Tag'                => 'heating',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Temperature Reverse (°C)
-                $addresses[] = [
-                    'Address1'           => 11,
-                    'Address2'           => 5,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 9,
-                    'Dimension'          => 0,
-                    'Tag'                => 'heating',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Energy Heat (kWh)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 1,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'heating',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Energy Heat (MWh)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 2,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'heating',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Energy Cool (kWh)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 4,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'heating',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-
-                //Energy Cool (MWh)
-                $addresses[] = [
-                    'Address1'           => 12,
-                    'Address2'           => 5,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 12,
-                    'Dimension'          => 0,
-                    'Tag'                => 'heating',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-            }
+            //Energy Reverse (kWh)
+            $addresses[] = [
+                'Address1'           => 12,
+                'Address2'           => 4,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 13,
+                'Dimension'          => 13,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
         }
+
+        if ($type == 1 /* Water, Gas, Oil */ || $type == 2 /* Heat Quantity */) {
+
+            //Volume (l)
+            $addresses[] = [
+                'Address1'           => 12,
+                'Address2'           => 6,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 12,
+                'Dimension'          => 1200,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+
+            //Volume (m^3)
+            $addresses[] = [
+                'Address1'           => 12,
+                'Address2'           => 7,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 12,
+                'Dimension'          => 1201,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+        }
+
+        if ($type == 2 /* Heat Quantity */) {
+
+            //Power (W)
+            $addresses[] = [
+                'Address1'           => 11,
+                'Address2'           => 0,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 14,
+                'Dimension'          => 36,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+
+            //Flow (m^3/h)
+            $addresses[] = [
+                'Address1'           => 11,
+                'Address2'           => 2,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 14,
+                'Dimension'          => 1200,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+
+            //Temperature Forward (°C)
+            $addresses[] = [
+                'Address1'           => 11,
+                'Address2'           => 4,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 14,
+                'Dimension'          => 1200,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+
+            //Temperature Reverse (°C)
+            $addresses[] = [
+                'Address1'           => 11,
+                'Address2'           => 5,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 9,
+                'Dimension'          => 1,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+
+            //Energy Heat (kWh)
+            $addresses[] = [
+                'Address1'           => 12,
+                'Address2'           => 1,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 13,
+                'Dimension'          => 13,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+
+            //Energy Heat (MWh)
+            $addresses[] = [
+                'Address1'           => 12,
+                'Address2'           => 2,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 13,
+                'Dimension'          => 16,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+
+            //Energy Cool (kWh)
+            $addresses[] = [
+                'Address1'           => 12,
+                'Address2'           => 4,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 13,
+                'Dimension'          => 13,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+
+            //Energy Cool (MWh)
+            $addresses[] = [
+                'Address1'           => 12,
+                'Address2'           => 5,
+                'Address3'           => ($group * 16) + $channel,
+                'Type'               => 13,
+                'Dimension'          => 16,
+                'Tag'                => $tag,
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ];
+        }
+
         return json_encode($addresses);
     }
 
@@ -620,48 +606,54 @@ class LJQuick extends IPSModule
      * 	0 = Temperature
      * 	1 = Temperature/Humidity
      *
-     * LJ_GenerateHeating($id, $Group, $Type);
+     * LJ_GenerateHeating($id, $group, $type);
      *
      */
-    public function GenerateHeating(int $Group, int $Type)
+    public function GenerateHeating(int $group, int $type, int $channel)
     {
-        switch ($Type) {
-            case 0:
-                $TypeName = 'Temperature';
-                break;
-            case 1:
-                $TypeName = 'Temperature/Humidity';
-                break;
-            default:
-                die('Invalid type!');
-        }
-        $addresses = [];
-        for ($Channel = 0; $Channel <= 9; $Channel++) {
+        //Status
+        $addresses = [[
+            'Address1'           => 13,
+            'Address2'           => 7,
+            'Address3'           => ($group * 16) + $channel,
+            'Type'               => 1,
+            'Dimension'          => 0,
+            'Tag'                => 'heating',
+            'SubTag'             => '',
+            'Mapping'            => [],
+            'CapabilityRead'     => boolval(false),
+            'CapabilityWrite'    => boolval(true),
+            'CapabilityReceive'  => boolval(true),
+            'CapabilityTransmit' => boolval(false),
+            'EmulateStatus'      => boolval(true)
+        ]];
 
-            //Status
+        //Temperature
+        $addresses[] = [
+            'Address1'           => 13,
+            'Address2'           => 5,
+            'Address3'           => ($group * 16) + $channel,
+            'Type'               => 9,
+            'Dimension'          => 1,
+            'Tag'                => 'heating',
+            'SubTag'             => '',
+            'Mapping'            => [],
+            'CapabilityRead'     => boolval(false),
+            'CapabilityWrite'    => boolval(true),
+            'CapabilityReceive'  => boolval(true),
+            'CapabilityTransmit' => boolval(false),
+            'EmulateStatus'      => boolval(true)
+        ];
+
+        if ($type == 1 /* Temperature/Humidity */) {
+
+            //Humidity
             $addresses[] = [
                 'Address1'           => 13,
-                'Address2'           => 7,
-                'Address3'           => ($Group * 16) + $Channel,
-                'Type'               => 1,
-                'Dimension'          => 0,
-                'Tag'                => 'heating',
-                'SubTag'             => '',
-                'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
-            ];
-
-            //Temperature
-            $addresses[] = [
-                'Address1'           => 13,
-                'Address2'           => 5,
-                'Address3'           => ($Group * 16) + $Channel,
+                'Address2'           => 6,
+                'Address3'           => ($group * 16) + $channel,
                 'Type'               => 9,
-                'Dimension'          => 0,
+                'Dimension'          => 7,
                 'Tag'                => 'heating',
                 'SubTag'             => '',
                 'Mapping'            => [],
@@ -671,27 +663,8 @@ class LJQuick extends IPSModule
                 'CapabilityTransmit' => boolval(false),
                 'EmulateStatus'      => boolval(true)
             ];
-
-            if ($Type == 1 /* Temperature/Humidity */) {
-
-                //Humidity
-                $addresses[] = [
-                    'Address1'           => 13,
-                    'Address2'           => 6,
-                    'Address3'           => ($Group * 16) + $Channel,
-                    'Type'               => 9,
-                    'Dimension'          => 0,
-                    'Tag'                => 'heating',
-                    'SubTag'             => '',
-                    'Mapping'            => [],
-                    'CapabilityRead'     => boolval(false),
-                    'CapabilityWrite'    => boolval(true),
-                    'CapabilityReceive'  => boolval(true),
-                    'CapabilityTransmit' => boolval(false),
-                    'EmulateStatus'      => boolval(true)
-                ];
-            }
         }
+
         return json_encode($addresses);
     }
 
