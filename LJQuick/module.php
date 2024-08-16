@@ -1,6 +1,7 @@
 <?php
+
 declare(strict_types=1);
-ini_set('ips.output_buffer', 2*1024*1024);
+ini_set('ips.output_buffer', 2 * 1024 * 1024);
 
 class LJQuick extends IPSModule
 {
