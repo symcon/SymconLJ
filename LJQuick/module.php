@@ -399,7 +399,7 @@ class LJQuick extends IPSModule
             'Address3'           => ($group * 16) + $channel,
             'InitialName'        => $this->Translate('Status'),
             'Type'               => 1,
-            'Dimension'          => 0,
+            'Dimension'          => 5,
             'Tag'                => $tag,
             'SubTag'             => '',
             'Mapping'            => [],
@@ -737,7 +737,7 @@ class LJQuick extends IPSModule
      */
     private function getHeatingAddresses(int $group, int $type, int $channel)
     {
-        //Status
+        //Valve Switch
         $addresses = [[
             'Address1'           => 13,
             'Address2'           => 0,
@@ -755,6 +755,7 @@ class LJQuick extends IPSModule
             'EmulateStatus'      => true
         ]];
 
+        
         //Status
         $addresses[] = [
             'Address1'           => 13,
@@ -762,7 +763,7 @@ class LJQuick extends IPSModule
             'Address3'           => ($group * 16) + $channel,
             'InitialName'        => $this->Translate('Status'),
             'Type'               => 1,
-            'Dimension'          => 0,
+            'Dimension'          => 5,
             'Tag'                => 'heating',
             'SubTag'             => '',
             'Mapping'            => [],
