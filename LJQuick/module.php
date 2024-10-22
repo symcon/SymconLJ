@@ -67,7 +67,7 @@ class LJQuick extends IPSModule
                         default               => '[]'
                     };
                     $tree[] = [
-                        'name'   => $channel == 0 ? $this->Translate('Channel All')  : $this->Translate('Channel') . ' ' . $channel,
+                        'name'   => $channel == 0 ? $this->Translate('Channel All') : $this->Translate('Channel') . ' ' . $channel,
                         'parent' => $groupParent,
                         'id'     => $id,
                         'create' => [
