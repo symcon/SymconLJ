@@ -4,7 +4,7 @@ declare(strict_types=1);
 include_once __DIR__ . '/stubs/Validator.php';
 class SymconLJValidationTest extends TestCaseSymconValidation
 {
-    public function testValidateVerbrauchsverhalten(): void
+    public function testValidateSymconLJ(): void
     {
         $this->validateLibrary(__DIR__ . '/..');
     }
