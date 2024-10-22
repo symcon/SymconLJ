@@ -755,53 +755,15 @@ class LJQuick extends IPSModule
             'EmulateStatus'      => true
         ]];
 
-        
-        //Status
-        $addresses[] = [
-            'Address1'           => 13,
-            'Address2'           => 7,
-            'Address3'           => ($group * 16) + $channel,
-            'InitialName'        => $this->Translate('Status'),
-            'Type'               => 1,
-            'Dimension'          => 5,
-            'Tag'                => 'heating',
-            'SubTag'             => '',
-            'Mapping'            => [],
-            'CapabilityRead'     => false,
-            'CapabilityWrite'    => false,
-            'CapabilityReceive'  => true,
-            'CapabilityTransmit' => false,
-            'EmulateStatus'      => true
-        ];
-
-        //Temperature
-        $addresses[] = [
-            'Address1'           => 13,
-            'Address2'           => 5,
-            'Address3'           => ($group * 16) + $channel,
-            'InitialName'        => $this->Translate('Temperature'),
-            'Type'               => 9,
-            'Dimension'          => 1,
-            'Tag'                => 'heating',
-            'SubTag'             => '',
-            'Mapping'            => [],
-            'CapabilityRead'     => false,
-            'CapabilityWrite'    => false,
-            'CapabilityReceive'  => true,
-            'CapabilityTransmit' => false,
-            'EmulateStatus'      => true
-        ];
-
-        if ($type == 1 /* Temperature/Humidity */) {
-
-            //Humidity
+        if ($channel > 0) {
+            //Status
             $addresses[] = [
                 'Address1'           => 13,
-                'Address2'           => 6,
+                'Address2'           => 7,
                 'Address3'           => ($group * 16) + $channel,
-                'InitialName'        => $this->Translate('Humidity'),
-                'Type'               => 9,
-                'Dimension'          => 7,
+                'InitialName'        => $this->Translate('Status'),
+                'Type'               => 1,
+                'Dimension'          => 5,
                 'Tag'                => 'heating',
                 'SubTag'             => '',
                 'Mapping'            => [],
@@ -811,6 +773,45 @@ class LJQuick extends IPSModule
                 'CapabilityTransmit' => false,
                 'EmulateStatus'      => true
             ];
+
+            //Temperature
+            $addresses[] = [
+                'Address1'           => 13,
+                'Address2'           => 5,
+                'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Temperature'),
+                'Type'               => 9,
+                'Dimension'          => 1,
+                'Tag'                => 'heating',
+                'SubTag'             => '',
+                'Mapping'            => [],
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
+            ];
+
+            if ($type == 1 /* Temperature/Humidity */) {
+
+                //Humidity
+                $addresses[] = [
+                    'Address1'           => 13,
+                    'Address2'           => 6,
+                    'Address3'           => ($group * 16) + $channel,
+                    'InitialName'        => $this->Translate('Humidity'),
+                    'Type'               => 9,
+                    'Dimension'          => 7,
+                    'Tag'                => 'heating',
+                    'SubTag'             => '',
+                    'Mapping'            => [],
+                    'CapabilityRead'     => false,
+                    'CapabilityWrite'    => false,
+                    'CapabilityReceive'  => true,
+                    'CapabilityTransmit' => false,
+                    'EmulateStatus'      => true
+                ];
+            }
         }
 
         return json_encode($addresses);
