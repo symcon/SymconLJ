@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-ini_set('ips.output_buffer', 2 * 1024 * 1024);
+ini_set('ips.output_buffer', 3 * 1024 * 1024);
 
 class LJQuick extends IPSModule
 {
@@ -327,7 +327,7 @@ class LJQuick extends IPSModule
                     'Address1'           => 14,
                     'Address2'           => 4,
                     'Address3'           => ($group * 16) + $channel,
-                    'InitialName'        => $this->Translate('Shutter Position'),
+                    'InitialName'        => $this->Translate('Lamella Position'),
                     'Tag'                => 'shading',
                     'SubTag'             => 'lamella',
                     'Type'               => 5,
@@ -740,6 +740,24 @@ class LJQuick extends IPSModule
         //Status
         $addresses = [[
             'Address1'           => 13,
+            'Address2'           => 0,
+            'Address3'           => ($group * 16) + $channel,
+            'InitialName'        => $this->Translate('Valve Switch'),
+            'Type'               => 1,
+            'Dimension'          => 1,
+            'Tag'                => 'heating',
+            'SubTag'             => '',
+            'Mapping'            => [],
+            'CapabilityRead'     => false,
+            'CapabilityWrite'    => false,
+            'CapabilityReceive'  => true,
+            'CapabilityTransmit' => false,
+            'EmulateStatus'      => true
+        ]];
+
+        //Status
+        $addresses[] = [
+            'Address1'           => 13,
             'Address2'           => 7,
             'Address3'           => ($group * 16) + $channel,
             'InitialName'        => $this->Translate('Status'),
@@ -753,7 +771,7 @@ class LJQuick extends IPSModule
             'CapabilityReceive'  => true,
             'CapabilityTransmit' => false,
             'EmulateStatus'      => true
-        ]];
+        ];
 
         //Temperature
         $addresses[] = [

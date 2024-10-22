@@ -19,10 +19,10 @@
             "Status": "Status",
             "Read Meter": "Lese Zähler",
             "Power Forward (W)": "Leistung vorwärts (W)",
-            "Power Reverse (W)": "Leistung  rückwärts(W)",
+            "Power Reverse (W)": "Leistung  rückwärts (W)",
             "Energy Forward (Wh)": "Energie vorwärts (Wh)",
             "Energy Forward (kWh)": "Energie vorwärts(kWh)",
-            "Energy Reverse (Wh)": "Energie rückwärts(Wh)",
+            "Energy Reverse (Wh)": "Energie rückwärts (Wh)",
             "Energy Reverse (kWh)": "Energie rückwärts (kWh)",
             "Volume (l)": "Volume (l)",
             "Volume (m³)": "Volume (m³)",
@@ -35,7 +35,10 @@
             "Energy Cool (kWh)": "Energiekälte (kWh)",
             "Energy Cool (MWh)": "Energiekälte (MWh)",
             "Humidity": "Luftfeuchtigkeit",
-            "Alarm (Wind)": "Alarm (Wind)"
+            "Alarm (Wind)": "Alarm (Wind)",
+            "Valve Switch": "Ventil Schaltaktor",
+            "Shutter Position": "Rolladen Position",
+            "Lamella Position": "Lamellen Position"
         }
     }
 }
