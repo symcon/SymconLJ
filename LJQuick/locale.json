@@ -5,7 +5,7 @@
             "Channel": "Kanal",
             "Switch": "Schalter",
             "Dimming": "Dimmen",
-            "Shutter": "Beschattung",
+            "Shutter": "Rolladen",
             "Energy": "Energie",
             "WaterGasOil": "Wasser, Gas, Öl",
             "HeatQuantity": "Wärmemengenzähler",
@@ -13,8 +13,7 @@
             "TemperatureHumidity": "Temperatur/Luftfeuchtigkeit",
             "KNX/EIB Configurator (KNX quick)": "KNX/EIB Konfigurator (KNX quick)",
             "https://www.symcon.de/en/service/documentation/module-reference/ljquick/": "https://www.symcon.de/de/service/dokumentation/modulreferenz/ljquick/",
-            "Value": "Wert",
-            "Up/Down": "Hoch/Runter",
+            "Intensity": "Intensität",
             "Lamella": "Lamellen",
             "Serial Number": "Seriennummer",
             "Status": "Status",
@@ -35,7 +34,8 @@
             "Energy Heat (MWh)": "Energiewärme (MWh)",
             "Energy Cool (kWh)": "Energiekälte (kWh)",
             "Energy Cool (MWh)": "Energiekälte (MWh)",
-            "Humidity": "Luftfeuchtigkeit"
+            "Humidity": "Luftfeuchtigkeit",
+            "Alarm (Wind)": "Alarm (Wind)"
         }
     }
 }

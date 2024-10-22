@@ -155,7 +155,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 15,
                 'Address2'           => 0,
                 'Address3'           => ($group * 16) + $channel,
-                'InitialName'        => $this->Translate('Switch'),
+                'InitialName'        => $this->Translate('Status'),
                 'Tag'                => 'lighting',
                 'SubTag'             => '',
                 'Type'               => 1,
@@ -177,11 +177,11 @@ class LJQuick extends IPSModule
                     'Address2' => 0,
                     'Address3' => 240 + $channel
                 ]] : [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(false)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => true,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => false
             ]]
         );
     }
@@ -193,7 +193,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 15,
                 'Address2'           => 4,
                 'Address3'           => ($group * 16) + $channel,
-                'InitialName'        => $this->Translate('Value'),
+                'InitialName'        => $this->Translate('Intensity'),
                 'Tag'                => 'lighting',
                 'SubTag'             => '',
                 'Type'               => 5,
@@ -215,27 +215,27 @@ class LJQuick extends IPSModule
                     'Address2' => 4,
                     'Address3' => 240 + $channel
                 ]] : [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => true,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ]]
         );
     }
 
     private function getShutterAddresses(int $group, int $channel)
     {
-        return json_encode([
+        $addresses = [
             [
                 'Address1'           => 14,
                 'Address2'           => 0,
                 'Address3'           => ($group * 16) + $channel,
-                'InitialName'        => $this->Translate('Up/Down'),
+                'InitialName'        => $this->Translate('Shutter'),
                 'Tag'                => 'shading',
                 'SubTag'             => '',
                 'Type'               => 1,
-                'Dimension'          => 1,
+                'Dimension'          => 8,
                 'Mapping'            => $channel > 0 ? [[
                     'Address1' => 14,
                     'Address2' => 0,
@@ -249,11 +249,11 @@ class LJQuick extends IPSModule
                     'Address2' => 0,
                     'Address3' => 240 + $channel
                 ]] : [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => true,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ],
             [
                 'Address1'           => 14,
@@ -263,7 +263,7 @@ class LJQuick extends IPSModule
                 'Tag'                => 'shading',
                 'SubTag'             => 'lamella',
                 'Type'               => 1,
-                'Dimension'          => 1,
+                'Dimension'          => 8,
                 'Mapping'            => $channel > 0 ? [[
                     'Address1' => 14,
                     'Address2' => 1,
@@ -277,13 +277,76 @@ class LJQuick extends IPSModule
                     'Address2' => 1,
                     'Address3' => 240 + $channel
                 ]] : [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => true,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
+            ],
+            [
+                'Address1'           => 14,
+                'Address2'           => 2,
+                'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Alarm (Wind)'),
+                'Tag'                => 'shading',
+                'SubTag'             => '',
+                'Type'               => 1,
+                'Dimension'          => 1,
+                'Mapping'            => [],
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ]
-        ]);
+        ];
+        if ($channel > 0) {
+            $addresses[] =
+                [
+                    'Address1'           => 14,
+                    'Address2'           => 3,
+                    'Address3'           => ($group * 16) + $channel,
+                    'InitialName'        => $this->Translate('Shutter Position'),
+                    'Tag'                => 'shading',
+                    'SubTag'             => '',
+                    'Type'               => 5,
+                    'Dimension'          => 1,
+                    'Mapping'            => [[
+                        'Address1' => 14,
+                        'Address2' => 5,
+                        'Address3' => $group * 16
+                    ]],
+                    'CapabilityRead'     => false,
+                    'CapabilityWrite'    => true,
+                    'CapabilityReceive'  => true,
+                    'CapabilityTransmit' => false,
+                    'EmulateStatus'      => true
+                ];
+            $addresses [] = 
+                [
+                    'Address1'           => 14,
+                    'Address2'           => 4,
+                    'Address3'           => ($group * 16) + $channel,
+                    'InitialName'        => $this->Translate('Shutter Position'),
+                    'Tag'                => 'shading',
+                    'SubTag'             => 'lamella',
+                    'Type'               => 5,
+                    'Dimension'          => 1,
+                    'Mapping'            => [[
+                        'Address1' => 14,
+                        'Address2' => 6,
+                        'Address3' => $group * 16
+                    ]],
+                    'CapabilityRead'     => false,
+                    'CapabilityWrite'    => true,
+                    'CapabilityReceive'  => true,
+                    'CapabilityTransmit' => false,
+                    'EmulateStatus'      => true
+                    ];
+        
+        }
+
+        return json_encode($addresses);
     }
 
     /**
@@ -322,11 +385,11 @@ class LJQuick extends IPSModule
             'Tag'                => $tag,
             'SubTag'             => '',
             'Mapping'            => [],
-            'CapabilityRead'     => boolval(false),
-            'CapabilityWrite'    => boolval(true),
-            'CapabilityReceive'  => boolval(true),
-            'CapabilityTransmit' => boolval(false),
-            'EmulateStatus'      => boolval(true)
+            'CapabilityRead'     => false,
+            'CapabilityWrite'    => false,
+            'CapabilityReceive'  => true,
+            'CapabilityTransmit' => false,
+            'EmulateStatus'      => true
         ]];
 
         //Status
@@ -340,11 +403,11 @@ class LJQuick extends IPSModule
             'Tag'                => $tag,
             'SubTag'             => '',
             'Mapping'            => [],
-            'CapabilityRead'     => boolval(false),
-            'CapabilityWrite'    => boolval(true),
-            'CapabilityReceive'  => boolval(true),
-            'CapabilityTransmit' => boolval(false),
-            'EmulateStatus'      => boolval(true)
+            'CapabilityRead'     => false,
+            'CapabilityWrite'    => false,
+            'CapabilityReceive'  => true,
+            'CapabilityTransmit' => false,
+            'EmulateStatus'      => true
         ];
 
         //Read Meter
@@ -358,11 +421,11 @@ class LJQuick extends IPSModule
             'Tag'                => $tag,
             'SubTag'             => '',
             'Mapping'            => [],
-            'CapabilityRead'     => boolval(false),
-            'CapabilityWrite'    => boolval(true),
-            'CapabilityReceive'  => boolval(true),
-            'CapabilityTransmit' => boolval(false),
-            'EmulateStatus'      => boolval(true)
+            'CapabilityRead'     => false,
+            'CapabilityWrite'    => true,
+            'CapabilityReceive'  => true,
+            'CapabilityTransmit' => false,
+            'EmulateStatus'      => true
         ];
 
         if ($type == 0 /* Energy */) {
@@ -378,11 +441,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Power Reverse (W)
@@ -396,11 +459,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Energy Forward (Wh)
@@ -414,11 +477,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Energy Forward (kWh)
@@ -432,11 +495,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Energy Reverse (Wh)
@@ -450,11 +513,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Energy Reverse (kWh)
@@ -468,11 +531,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
         }
 
@@ -489,11 +552,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Volume (m^3)
@@ -507,11 +570,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
         }
 
@@ -528,11 +591,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Flow (m^3/h)
@@ -546,11 +609,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Temperature Forward (°C)
@@ -564,11 +627,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Temperature Reverse (°C)
@@ -582,11 +645,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Energy Heat (kWh)
@@ -600,11 +663,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Energy Heat (MWh)
@@ -618,11 +681,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Energy Cool (kWh)
@@ -636,11 +699,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
 
             //Energy Cool (MWh)
@@ -654,11 +717,11 @@ class LJQuick extends IPSModule
                 'Tag'                => $tag,
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
         }
 
@@ -685,11 +748,11 @@ class LJQuick extends IPSModule
             'Tag'                => 'heating',
             'SubTag'             => '',
             'Mapping'            => [],
-            'CapabilityRead'     => boolval(false),
-            'CapabilityWrite'    => boolval(true),
-            'CapabilityReceive'  => boolval(true),
-            'CapabilityTransmit' => boolval(false),
-            'EmulateStatus'      => boolval(true)
+            'CapabilityRead'     => false,
+            'CapabilityWrite'    => false,
+            'CapabilityReceive'  => true,
+            'CapabilityTransmit' => false,
+            'EmulateStatus'      => true
         ]];
 
         //Temperature
@@ -703,11 +766,11 @@ class LJQuick extends IPSModule
             'Tag'                => 'heating',
             'SubTag'             => '',
             'Mapping'            => [],
-            'CapabilityRead'     => boolval(false),
-            'CapabilityWrite'    => boolval(true),
-            'CapabilityReceive'  => boolval(true),
-            'CapabilityTransmit' => boolval(false),
-            'EmulateStatus'      => boolval(true)
+            'CapabilityRead'     => false,
+            'CapabilityWrite'    => false,
+            'CapabilityReceive'  => true,
+            'CapabilityTransmit' => false,
+            'EmulateStatus'      => true
         ];
 
         if ($type == 1 /* Temperature/Humidity */) {
@@ -723,11 +786,11 @@ class LJQuick extends IPSModule
                 'Tag'                => 'heating',
                 'SubTag'             => '',
                 'Mapping'            => [],
-                'CapabilityRead'     => boolval(false),
-                'CapabilityWrite'    => boolval(true),
-                'CapabilityReceive'  => boolval(true),
-                'CapabilityTransmit' => boolval(false),
-                'EmulateStatus'      => boolval(true)
+                'CapabilityRead'     => false,
+                'CapabilityWrite'    => false,
+                'CapabilityReceive'  => true,
+                'CapabilityTransmit' => false,
+                'EmulateStatus'      => true
             ];
         }
 
