@@ -12,7 +12,30 @@
             "Temperature": "Temperatur",
             "TemperatureHumidity": "Temperatur/Luftfeuchtigkeit",
             "KNX/EIB Configurator (KNX quick)": "KNX/EIB Konfigurator (KNX quick)",
-            "https://www.symcon.de/en/service/documentation/module-reference/ljquick/": "https://www.symcon.de/de/service/dokumentation/modulreferenz/ljquick/"
+            "https://www.symcon.de/en/service/documentation/module-reference/ljquick/": "https://www.symcon.de/de/service/dokumentation/modulreferenz/ljquick/",
+            "Value": "Wert",
+            "Up/Down": "Hoch/Runter",
+            "Lamella": "Lamellen",
+            "Serial Number": "Seriennummer",
+            "Status": "Status",
+            "Read Meter": "Lese Zähler",
+            "Power Forward (W)": "Leistung vorwärts (W)",
+            "Power Reverse (W)": "Leistung  rückwärts(W)",
+            "Energy Forward (Wh)": "Energie vorwärts (Wh)",
+            "Energy Forward (kWh)": "Energie vorwärts(kWh)",
+            "Energy Reverse (Wh)": "Energie rückwärts(Wh)",
+            "Energy Reverse (kWh)": "Energie rückwärts (kWh)",
+            "Volume (l)": "Volume (l)",
+            "Volume (m³)": "Volume (m³)",
+            "Power (W)": "Leistung (W)",
+            "Flow (m³/h)": "Fluss (m³/h)",
+            "Temperature Forward (°C)": "Temperatur vorwärts (°C)",
+            "Temperature Reverse (°C)": "Temperatur rückwärts (°C)",
+            "Energy Heat (kWh)": "Energiewärme (kWh)",
+            "Energy Heat (MWh)": "Energiewärme (MWh)",
+            "Energy Cool (kWh)": "Energiekälte (kWh)",
+            "Energy Cool (MWh)": "Energiekälte (MWh)",
+            "Humidity": "Luftfeuchtigkeit"
         }
     }
 }

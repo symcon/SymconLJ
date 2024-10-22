@@ -155,6 +155,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 15,
                 'Address2'           => 0,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Switch'),
                 'Tag'                => 'lighting',
                 'SubTag'             => '',
                 'Type'               => 1,
@@ -192,6 +193,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 15,
                 'Address2'           => 4,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Value'),
                 'Tag'                => 'lighting',
                 'SubTag'             => '',
                 'Type'               => 5,
@@ -224,59 +226,64 @@ class LJQuick extends IPSModule
 
     private function getShutterAddresses(int $group, int $channel)
     {
-        return json_encode([[
-            'Address1'           => 14,
-            'Address2'           => 0,
-            'Address3'           => ($group * 16) + $channel,
-            'Tag'                => 'shading',
-            'SubTag'             => '',
-            'Type'               => 1,
-            'Dimension'          => 1,
-            'Mapping'            => $channel > 0 ? [[
-                'Address1' => 14,
-                'Address2' => 0,
-                'Address3' => $group * 16
-            ], [
-                'Address1' => 14,
-                'Address2' => 0,
-                'Address3' => 240
-            ], [
-                'Address1' => 14,
-                'Address2' => 0,
-                'Address3' => 240 + $channel
-            ]] : [],
-            'CapabilityRead'     => boolval(false),
-            'CapabilityWrite'    => boolval(true),
-            'CapabilityReceive'  => boolval(true),
-            'CapabilityTransmit' => boolval(false),
-            'EmulateStatus'      => boolval(true)
-        ], [
-            'Address1'           => 14,
-            'Address2'           => 1,
-            'Address3'           => ($group * 16) + $channel,
-            'Tag'                => 'shading',
-            'SubTag'             => 'lamella',
-            'Type'               => 1,
-            'Dimension'          => 1,
-            'Mapping'            => $channel > 0 ? [[
-                'Address1' => 14,
-                'Address2' => 1,
-                'Address3' => $group * 16
-            ], [
-                'Address1' => 14,
-                'Address2' => 1,
-                'Address3' => 240
-            ], [
-                'Address1' => 14,
-                'Address2' => 1,
-                'Address3' => 240 + $channel
-            ]] : [],
-            'CapabilityRead'     => boolval(false),
-            'CapabilityWrite'    => boolval(true),
-            'CapabilityReceive'  => boolval(true),
-            'CapabilityTransmit' => boolval(false),
-            'EmulateStatus'      => boolval(true)
-        ]]);
+        return json_encode([
+            [
+                'Address1'           => 14,
+                'Address2'           => 0,
+                'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Up/Down'),
+                'Tag'                => 'shading',
+                'SubTag'             => '',
+                'Type'               => 1,
+                'Dimension'          => 1,
+                'Mapping'            => $channel > 0 ? [[
+                    'Address1' => 14,
+                    'Address2' => 0,
+                    'Address3' => $group * 16
+                ], [
+                    'Address1' => 14,
+                    'Address2' => 0,
+                    'Address3' => 240
+                ], [
+                    'Address1' => 14,
+                    'Address2' => 0,
+                    'Address3' => 240 + $channel
+                ]] : [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ],
+            [
+                'Address1'           => 14,
+                'Address2'           => 1,
+                'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Lamella'),
+                'Tag'                => 'shading',
+                'SubTag'             => 'lamella',
+                'Type'               => 1,
+                'Dimension'          => 1,
+                'Mapping'            => $channel > 0 ? [[
+                    'Address1' => 14,
+                    'Address2' => 1,
+                    'Address3' => $group * 16
+                ], [
+                    'Address1' => 14,
+                    'Address2' => 1,
+                    'Address3' => 240
+                ], [
+                    'Address1' => 14,
+                    'Address2' => 1,
+                    'Address3' => 240 + $channel
+                ]] : [],
+                'CapabilityRead'     => boolval(false),
+                'CapabilityWrite'    => boolval(true),
+                'CapabilityReceive'  => boolval(true),
+                'CapabilityTransmit' => boolval(false),
+                'EmulateStatus'      => boolval(true)
+            ]
+        ]);
     }
 
     /**
@@ -309,6 +316,7 @@ class LJQuick extends IPSModule
             'Address1'           => 11,
             'Address2'           => 6,
             'Address3'           => ($group * 16) + $channel,
+            'InitialName'        => $this->Translate('Serial Number'),
             'Type'               => 12,
             'Dimension'          => 0,
             'Tag'                => $tag,
@@ -326,6 +334,7 @@ class LJQuick extends IPSModule
             'Address1'           => 11,
             'Address2'           => 7,
             'Address3'           => ($group * 16) + $channel,
+            'InitialName'        => $this->Translate('Status'),
             'Type'               => 1,
             'Dimension'          => 0,
             'Tag'                => $tag,
@@ -343,6 +352,7 @@ class LJQuick extends IPSModule
             'Address1'           => 14,
             'Address2'           => 7,
             'Address3'           => ($group * 16) + $channel,
+            'InitialName'        => $this->Translate('Read Meter'),
             'Type'               => 1,
             'Dimension'          => 0,
             'Tag'                => $tag,
@@ -362,6 +372,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 11,
                 'Address2'           => 0,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Power Forward (W)'),
                 'Type'               => 14,
                 'Dimension'          => 56,
                 'Tag'                => $tag,
@@ -379,6 +390,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 11,
                 'Address2'           => 1,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Power Reverse (W)'),
                 'Type'               => 14,
                 'Dimension'          => 56,
                 'Tag'                => $tag,
@@ -396,6 +408,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 0,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Energy Forward (Wh)'),
                 'Type'               => 13,
                 'Dimension'          => 10,
                 'Tag'                => $tag,
@@ -413,6 +426,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 1,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Energy Forward (kWh)'),
                 'Type'               => 13,
                 'Dimension'          => 13,
                 'Tag'                => $tag,
@@ -430,6 +444,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 3,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Energy Reverse (Wh)'),
                 'Type'               => 13,
                 'Dimension'          => 10,
                 'Tag'                => $tag,
@@ -447,6 +462,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 4,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Energy Reverse (kWh)'),
                 'Type'               => 13,
                 'Dimension'          => 13,
                 'Tag'                => $tag,
@@ -467,6 +483,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 6,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Volume (l)'),
                 'Type'               => 12,
                 'Dimension'          => 1200,
                 'Tag'                => $tag,
@@ -484,6 +501,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 7,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Volume (m³)'),
                 'Type'               => 12,
                 'Dimension'          => 1201,
                 'Tag'                => $tag,
@@ -504,6 +522,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 11,
                 'Address2'           => 0,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Power (W)'),
                 'Type'               => 14,
                 'Dimension'          => 36,
                 'Tag'                => $tag,
@@ -521,6 +540,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 11,
                 'Address2'           => 2,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Flow (m³/h)'),
                 'Type'               => 14,
                 'Dimension'          => 1200,
                 'Tag'                => $tag,
@@ -538,6 +558,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 11,
                 'Address2'           => 4,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Temperature Forward (°C)'),
                 'Type'               => 14,
                 'Dimension'          => 1200,
                 'Tag'                => $tag,
@@ -555,6 +576,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 11,
                 'Address2'           => 5,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Temperature Reverse (°C)'),
                 'Type'               => 9,
                 'Dimension'          => 1,
                 'Tag'                => $tag,
@@ -572,6 +594,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 1,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Energy Heat (kWh)'),
                 'Type'               => 13,
                 'Dimension'          => 13,
                 'Tag'                => $tag,
@@ -589,6 +612,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 2,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Energy Heat (MWh)'),
                 'Type'               => 13,
                 'Dimension'          => 16,
                 'Tag'                => $tag,
@@ -606,6 +630,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 4,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Energy Cool (kWh)'),
                 'Type'               => 13,
                 'Dimension'          => 13,
                 'Tag'                => $tag,
@@ -623,6 +648,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 12,
                 'Address2'           => 5,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Energy Cool (MWh)'),
                 'Type'               => 13,
                 'Dimension'          => 16,
                 'Tag'                => $tag,
@@ -653,6 +679,7 @@ class LJQuick extends IPSModule
             'Address1'           => 13,
             'Address2'           => 7,
             'Address3'           => ($group * 16) + $channel,
+            'InitialName'        => $this->Translate('Status'),
             'Type'               => 1,
             'Dimension'          => 0,
             'Tag'                => 'heating',
@@ -670,6 +697,7 @@ class LJQuick extends IPSModule
             'Address1'           => 13,
             'Address2'           => 5,
             'Address3'           => ($group * 16) + $channel,
+            'InitialName'        => $this->Translate('Temperature'),
             'Type'               => 9,
             'Dimension'          => 1,
             'Tag'                => 'heating',
@@ -689,6 +717,7 @@ class LJQuick extends IPSModule
                 'Address1'           => 13,
                 'Address2'           => 6,
                 'Address3'           => ($group * 16) + $channel,
+                'InitialName'        => $this->Translate('Humidity'),
                 'Type'               => 9,
                 'Dimension'          => 7,
                 'Tag'                => 'heating',
