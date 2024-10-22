@@ -38,7 +38,8 @@
             "Alarm (Wind)": "Alarm (Wind)",
             "Valve Switch": "Ventil Schaltaktor",
             "Shutter Position": "Rolladen Position",
-            "Lamella Position": "Lamellen Position"
+            "Lamella Position": "Lamellen Position",
+            "Channel All": "Kanal Alle"
         }
     }
 }
