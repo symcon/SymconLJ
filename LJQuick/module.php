@@ -322,7 +322,7 @@ class LJQuick extends IPSModule
                     'CapabilityTransmit' => false,
                     'EmulateStatus'      => true
                 ];
-            $addresses [] = 
+            $addresses [] =
                 [
                     'Address1'           => 14,
                     'Address2'           => 4,
@@ -342,8 +342,8 @@ class LJQuick extends IPSModule
                     'CapabilityReceive'  => true,
                     'CapabilityTransmit' => false,
                     'EmulateStatus'      => true
-                    ];
-        
+                ];
+
         }
 
         return json_encode($addresses);
