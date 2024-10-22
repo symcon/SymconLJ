@@ -291,7 +291,7 @@ class LJQuick extends IPSModule
                 'Tag'                => 'shading',
                 'SubTag'             => '',
                 'Type'               => 1,
-                'Dimension'          => 1,
+                'Dimension'          => 5,
                 'Mapping'            => [],
                 'CapabilityRead'     => false,
                 'CapabilityWrite'    => false,
