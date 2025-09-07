@@ -6,5 +6,5 @@
 
 Folgende Module beinhaltet das SymconLJ Repository:
 
-- __LJQuick__ ([Dokumentation](https://www.symcon.de/de/service/dokumentation/modulreferenz/ljquick))  
+- __LJQuick__ ([Dokumentation](https://www.symcon.de/de/service/dokumentation/modulreferenz/ljquick/))  
     Das KNX quick (Lingg&Janke) Modul unterstütz bei der Einrichtung von KNX Instanzen.
