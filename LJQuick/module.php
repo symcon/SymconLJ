@@ -136,11 +136,11 @@ class LJQuick extends IPSModule
             chr(0);
 
         $json = [
-            'DataID'        => '{42DFD4E4-5831-4A27-91B9-6FF1B2960260}',
-            'Address1'      => 30,
-            'Address2'      => 3,
-            'Address3'      => 254,
-            'Data'          => utf8_encode($data)
+            'DataID'             => '{42DFD4E4-5831-4A27-91B9-6FF1B2960260}',
+            'GroupAddress1'      => 30,
+            'GroupAddress2'      => 3,
+            'GroupAddress3'      => 254,
+            'Data'               => utf8_encode($data)
         ];
         if ($this->HasActiveParent()) {
             $this->SendDataToParent(json_encode($json));
